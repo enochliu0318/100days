@@ -4,5 +4,6 @@ him: Enoch
 her: Sissi
 start: 2026-06-30
 milestone: 100
+tease: 1
 music: assets/music.mp3
 ---

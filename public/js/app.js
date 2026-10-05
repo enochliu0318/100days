@@ -172,9 +172,60 @@ function init(c,events,letter){
     $('h').textContent=p2(Math.floor(diff/36e5)%24);$('m').textContent=p2(Math.floor(diff/6e4)%60);$('s').textContent=p2(Math.floor(diff/1e3)%60);
     const tg=new Date(START);tg.setDate(tg.getDate()+N-1);const r=tg-now;
     $('cd').textContent=r>0?`距离第 ${N} 天,还有 ${Math.floor(r/864e5)} 天 ${Math.floor(r/36e5)%24} 小时`
-      :n===N?`🎉 今天,就是我们的第 ${N} 天!`:`我们已经走过了第 ${N} 天 ♥`;
+      :n===N?`🎉 今天是我们的第 ${N} 天!`:`我们已经走过了第 ${N} 天 ♥`;
   }
   tick();setInterval(tick,1000);
+
+  // ── 解锁闸门:三个阶段 ──
+  //   locked  未进入剧透期 → 只显示计数(信件与时间轴整段隐藏)
+  //   teased  剧透期(解锁前 TEASE 天)→ 预告"有内容",但仍不给看
+  //   open    满 N 天 → 全部展开
+  const MAIN=document.querySelector('main');
+  const TEASE=Math.max(0,+c.tease||0);                 // site.md 里 tease 配置剧透提前天数
+  const un=new Date(START);un.setDate(un.getDate()+N-1); // 解锁日 00:00
+  const leftDays=()=>Math.ceil((un-new Date())/864e5);   // 距解锁还剩几天(向上取整)
+  let gateT=null;
+  function gate(){
+    const L=leftDays();
+    const st=L<=0?'open':(L<=TEASE?'teased':'locked');
+    const fresh=st!==gate.st;gate.st=st;
+    MAIN.classList.toggle('pending',st!=='open');
+    MAIN.classList.toggle('teasing',st==='teased');
+    if(fresh)paint(st,L);
+    return st;
+  }
+  // 按阶段渲染提示文案
+  function paint(st,L){
+    const D=fmt(un).replace(/\./g,' · ');
+    if(st==='open'){$('pn').innerHTML='';return}
+    if(st==='teased'){
+      $('pn').innerHTML='';                       // 剧透卡片自己会说明,不再重复
+      $('tnum').textContent=`${events.length}`;
+      $('tday').textContent=`第 ${N} 天 · ${fmt(un)}`;
+      $('thint').textContent=L===1?'就是明天 ♥':`还有 ${L} 天 · 先数完最后几天`;
+      return;
+    }
+    $('pn').innerHTML=`<span class="pk">🔒</span>更多内容会在第 ${N} 天解锁<br><b>${D}</b><i>还有 ${L} 天 · 故事慢慢来</i>`;
+  }
+  // 跨越剧透起点 / 解锁时刻:留在页面上的用户无需刷新,到点自动切换
+  function schedule(){
+    clearTimeout(gateT);
+    const ms=un-new Date();
+    if(ms<=0)return;
+    gateT=setTimeout(()=>{if(gate()==='open')unlock();schedule()},ms+1500);
+  }
+  gate();schedule();
+
+  // 解锁演出:彩带 + 两段内容依次浮现
+  function unlock(){
+    MAIN.classList.remove('pending');
+    const [W,H]=size();
+    burst(W/2,H*.4);setTimeout(()=>burst(W*.3,H*.3),320);setTimeout(()=>burst(W*.7,H*.32),640);
+    const secs=[...document.querySelectorAll('.env,.moments')];
+    secs.forEach((s,i)=>{s.style.transition='none';s.classList.remove('show');
+      setTimeout(()=>{s.style.transition='';requestAnimationFrame(()=>s.classList.add('show'))},260+i*220)});
+    $('cd').textContent=`🎉 第 ${N} 天，全部内容已解锁`;
+  }
 
   // 滚动显现
   const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('show')),{threshold:.1});

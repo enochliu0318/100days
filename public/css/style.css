@@ -22,6 +22,35 @@ canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index
 #intro p{color:var(--soft);margin:34px 0 0;font-size:14px;letter-spacing:.2em;animation:fade 2s infinite alternate}
 @keyframes fade{from{opacity:.3}to{opacity:1}}
 main{position:relative;z-index:2;max-width:520px;margin:0 auto;padding:44px 20px 80px}
+/* ── 未满 milestone 天:站点常开,但只显示计数;信件与时间轴整段收起 ── */
+main.pending .env,main.pending .moments{display:none}
+.pnote{display:none;margin:30px auto 0;max-width:400px;text-align:center;font-size:13.5px;line-height:2.1;color:var(--soft);letter-spacing:.05em}
+main.pending .pnote{display:block;animation:fade 2.6s ease-in-out infinite alternate}
+.pnote .pk{display:block;font-size:20px;margin-bottom:10px;opacity:.75;animation:beat 2.4s infinite}
+.pnote b{color:var(--accent);font-weight:600;letter-spacing:.08em}
+.pnote i{display:block;margin-top:8px;font-style:normal;font-size:12.5px;opacity:.8}
+/* ── 剧透期(解锁前 N 天):预告有内容,但只给轮廓,不给内容 ── */
+main.teasing .teaser{display:block;animation:tpop 1s cubic-bezier(.2,.8,.3,1) both}
+.teaser{display:none;margin:32px auto 0;max-width:400px;text-align:center;color:var(--soft);
+  padding:26px 22px 22px;border:1px solid var(--bd);border-radius:20px;
+  background:var(--card);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  box-shadow:0 14px 36px rgba(120,40,70,.14);animation:tpop 1s cubic-bezier(.2,.8,.3,1) both}
+@keyframes tpop{from{opacity:0;transform:translateY(22px) scale(.96)}to{opacity:1;transform:none}}
+.tenv{color:var(--accent);width:112px;margin:0 auto 6px}
+.tenv svg{display:block;width:100%;height:auto;animation:tfloat 4.5s ease-in-out infinite alternate}
+@keyframes tfloat{from{transform:translateY(4px) rotate(-1.6deg)}to{transform:translateY(-5px) rotate(1.6deg)}}
+.tenv circle{transform-origin:60px 62px;animation:beat 2.6s infinite}
+.teaser .tt{font-size:15.5px;letter-spacing:.14em;color:var(--ink);margin:10px 0 16px}
+.tlist{list-style:none;margin:0 0 16px;padding:0;text-align:left}
+.tlist li{display:flex;align-items:center;gap:10px;font-size:13.5px;line-height:2.1;
+  color:var(--soft);letter-spacing:.04em}
+.tlist .tk{flex:0 0 auto;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:11px;color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,transparent);
+  font-family:"Noto Serif SC","Songti SC",serif;font-weight:600}
+.tlist #tnum{margin-right:.35em}
+.teaser .tcd{margin:0 0 8px;font-size:12.5px;letter-spacing:.1em;color:var(--soft)}
+.teaser .tcd b{color:var(--accent);font-weight:600;letter-spacing:.08em}
+.teaser .thint{margin:0;font-size:13px;letter-spacing:.12em;color:var(--gold);animation:fade 2.4s infinite alternate}
 section{margin-bottom:60px;opacity:0;transform:translateY(28px);transition:all 1s cubic-bezier(.2,.7,.2,1)}
 section.show{opacity:1;transform:none}
 .hero{text-align:center}
