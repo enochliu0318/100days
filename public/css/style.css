@@ -47,7 +47,6 @@ main.teasing .teaser{display:block;animation:tpop 1s cubic-bezier(.2,.8,.3,1) bo
 .tlist .tk{flex:0 0 auto;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;
   justify-content:center;font-size:11px;color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,transparent);
   font-family:"Noto Serif SC","Songti SC",serif;font-weight:600}
-.tlist #tnum{margin-right:.35em}
 .teaser .tcd{margin:0 0 8px;font-size:12.5px;letter-spacing:.1em;color:var(--soft)}
 .teaser .tcd b{color:var(--accent);font-weight:600;letter-spacing:.08em}
 .teaser .thint{margin:0;font-size:13px;letter-spacing:.12em;color:var(--gold);animation:fade 2.4s infinite alternate}
@@ -83,8 +82,9 @@ h2 small{display:block;font-family:"Playfair Display",Georgia,serif;font-style:i
 .ev:after{content:"›";position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:24px;line-height:1;color:var(--accent);opacity:.5;transition:transform .25s,opacity .25s}
 .ev:hover{transform:translateY(-3px);box-shadow:0 16px 32px rgba(224,80,126,.18)}
 .ev:hover:after{transform:translate(4px,-50%);opacity:1}
-/* 弹窗打开时隐藏下方卡片的箭头,避免从半透明遮罩里透出来干扰阅读 */
-body.modal-on .ev:after{opacity:0}
+/* 弹窗打开时隐藏时间轴卡片的箭头,避免从半透明遮罩里透出来干扰阅读
+   (弹窗本体用 .memo,不再复用这里的 .ev,故本规则只影响卡片) */
+body.modal-on .tl .ev:after{opacity:0}
 .ev.future{border-style:dashed}.ev.future:before{background:var(--paper);box-shadow:0 0 0 2px var(--accent),0 0 0 6px var(--line)}
 .env{text-align:center}
 /* 手绘信封:后板 + 露出的信纸 + V 形前袋 + 可翻开的顶盖;火漆封在盖尖 */
@@ -100,6 +100,16 @@ body.modal-on .ev:after{opacity:0}
 .envsvg .flapback{transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(0);transition:transform .28s cubic-bezier(.25,.7,.3,1) .38s}
 .envwrap.open .flapback{animation:flapBack .28s .34s cubic-bezier(.25,.7,.3,1) forwards}
 @keyframes flapBack{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+/* 收起态:信纸先完全缩回(0–.5s) → 回折盖才落下(.5–.8s) → 前盖随后合上(.7–1.1s,
+   与回折盖尾段轻微重叠,读作同一只盖子绕折线翻过来,交接不脱节)。
+   之前回折盖 .3s 就落、信纸 .5s 才缩完,信纸顶会横穿正在下塌的回折盖(穿模)。
+   前盖/翻盖在展开时由 animation(forwards)驱动,单纯移除 .open 会让它一帧跳回,
+   因此用 .closing 显式驱动收合;fill-mode:both 让延迟期内仍停在打开位,衔接不跳变。 */
+.envwrap.closing .esheet{transform:none;filter:none;transition:transform .5s cubic-bezier(.55,.1,.6,1),filter .5s}
+.envwrap.closing .flapback{animation:flapbackclose .3s .5s cubic-bezier(.25,.7,.3,1) both}
+.envwrap.closing .flap{animation:flapclose .4s .7s cubic-bezier(.3,.6,.4,1) both}
+@keyframes flapclose{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes flapbackclose{from{transform:scaleY(1)}to{transform:scaleY(0)}}
 .sealpos{position:absolute;left:50%;top:65%;transform:translate(-50%,-50%);z-index:2;pointer-events:none}
 #seal{position:relative;display:block;width:clamp(76px,25vw,96px);height:clamp(76px,25vw,96px);border:0;padding:0;background:none;font:inherit;cursor:pointer;pointer-events:auto;-webkit-tap-highlight-color:transparent;transition:transform .3s cubic-bezier(.2,.8,.3,1.4)}
 #seal svg{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 14px 26px rgba(110,10,30,.5)) drop-shadow(0 2px 5px rgba(110,10,30,.35))}
@@ -145,11 +155,18 @@ body.modal-on .ev:after{opacity:0}
 #mb .iPause{display:none}
 #mb.on .iPause{display:block}
 #mb.on .iPlay{display:none}
+#lb svg{width:60%;height:60%;display:block;filter:drop-shadow(0 1px 2px rgba(90,40,64,.28))}
+#lb .lsh{transform-origin:12px 11px;transition:transform .3s cubic-bezier(.34,1.3,.5,1)}
+#mus button,#mus svg{transition:transform .18s}
+#mus button:active{transform:scale(.93)}
+#lb:active .lsh{transform:translateY(-1.6px)}
 @keyframes spin{to{transform:rotate(360deg)}}
 footer{text-align:center;color:var(--soft);font-size:13px;letter-spacing:.12em;line-height:2}
-.modal{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(42,10,26,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+/* 遮罩是 inset:0 的整屏层:margin/border-radius 显式归零,否则一旦有其它类名规则命中,
+   遮罩会比视口矮一截或四角变圆,屏幕边缘就会漏出页面底色(表现为"上下各有一块空白") */
+.modal{position:fixed;inset:0;margin:0;border-radius:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(42,10,26,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
 /* 弹窗需高于粒子画布(canvas 是 z-index:90),否则飘落花瓣直接压在正文上,读不清 */
-.modal.ev,.modal.letter{z-index:95}
+.modal.memo,.modal.letter{z-index:95}
 .modal.open{opacity:1;visibility:visible}
 .mwrap{position:relative;width:100%;max-width:520px}
 .mbox{width:100%;max-height:min(78vh,660px);overflow-y:auto;-webkit-overflow-scrolling:touch;border-radius:20px;transform:translateY(28px) scale(.96);transition:transform .45s cubic-bezier(.2,.8,.3,1)}
@@ -163,24 +180,25 @@ footer{text-align:center;color:var(--soft);font-size:13px;letter-spacing:.12em;l
 .mx::after{transform:translate(-50%,-50%) rotate(-45deg)}
 .mx:hover{transform:rotate(90deg);color:var(--accent)}
 .mbody{padding:26px}
-/* 时间轴弹窗:专用阅读面板。--sheet 近乎不透明,让文字脱离背后动态 blob/渐变;
+/* 时间轴弹窗(.memo):专用类名,不复用卡片的 .ev——否则会继承卡片的 border-radius:18px
+   与 margin-bottom:14px,把整屏遮罩挖掉四角和底部一条带。专用阅读面板。--sheet 近乎不透明,让文字脱离背后动态 blob/渐变;
    字重 400(继承 body 的 300 在半透明底上笔画发虚)、字号行距放大、行宽收敛到 ~34 字/行 */
-.modal.ev .mbox{background:var(--sheet);backdrop-filter:blur(20px) saturate(1.1);-webkit-backdrop-filter:blur(20px) saturate(1.1);border:1px solid var(--sheet-line);box-shadow:0 24px 60px rgba(120,40,70,.28);text-align:left}
-.modal.ev .mbody{padding:26px 26px 22px}
-.modal.ev time{display:inline-block;font-size:12.5px;font-weight:500;color:#fff;background:linear-gradient(90deg,var(--accent),var(--accent2));padding:2px 13px;border-radius:20px;letter-spacing:.08em}
-.modal.ev h3{margin:12px 0 14px;font-size:21px;font-weight:600;color:var(--ink);letter-spacing:.04em;line-height:1.45}
-.modal.ev p{margin:0 0 14px;font-size:16.5px;font-weight:400;color:var(--ink);line-height:1.95;letter-spacing:.02em;overflow-wrap:break-word;text-align:justify}
+.modal.memo .mbox{background:var(--sheet);backdrop-filter:blur(20px) saturate(1.1);-webkit-backdrop-filter:blur(20px) saturate(1.1);border:1px solid var(--sheet-line);box-shadow:0 24px 60px rgba(120,40,70,.28);text-align:left}
+.modal.memo .mbody{padding:26px 26px 22px}
+.modal.memo time{display:inline-block;font-size:12.5px;font-weight:500;color:#fff;background:linear-gradient(90deg,var(--accent),var(--accent2));padding:2px 13px;border-radius:20px;letter-spacing:.08em}
+.modal.memo h3{margin:12px 0 14px;font-size:21px;font-weight:600;color:var(--ink);letter-spacing:.04em;line-height:1.45}
+.modal.memo p{margin:0 0 14px;font-size:16.5px;font-weight:400;color:var(--ink);line-height:1.95;letter-spacing:.02em;overflow-wrap:break-word;text-align:justify}
 /* 首段做导语:略大一号 + 左侧主题色竖线,进入正文后层次分明 */
-.modal.ev p:first-of-type{margin-top:2px;font-size:17px;color:var(--accent);font-weight:600;letter-spacing:.03em;text-indent:0;padding-left:12px;border-left:3px solid var(--accent);border-radius:2px}
-.modal.ev img{display:block;width:100%;border-radius:12px;margin:14px 0}
+.modal.memo p:first-of-type{margin-top:2px;font-size:17px;color:var(--accent);font-weight:600;letter-spacing:.03em;text-indent:0;padding-left:12px;border-left:3px solid var(--accent);border-radius:2px}
+.modal.memo img{display:block;width:100%;border-radius:12px;margin:14px 0}
 /* 对比标签:把"日常状态 / 和你的状态"提到段首,长段落立刻可扫读 */
-.modal.ev .lab{font-weight:600;color:var(--accent);letter-spacing:.03em}
+.modal.memo .lab{font-weight:600;color:var(--accent);letter-spacing:.03em}
 /* .alt 独占一行:JS 只输出正文,"和你的状态"由 :before 生成,避免"你的状态"重复两次 */
-.modal.ev .lab.alt{display:block;color:var(--gold);margin:10px 0 2px;font-size:.92em}
-.modal.ev .lab.alt:before{content:"你的状态";font-size:1em;letter-spacing:.1em;font-weight:600;opacity:.95;margin-right:.5em}
+.modal.memo .lab.alt{display:block;color:var(--gold);margin:10px 0 2px;font-size:.92em}
+.modal.memo .lab.alt:before{content:"你的状态";font-size:1em;letter-spacing:.1em;font-weight:600;opacity:.95;margin-right:.5em}
 /* 编号条目:主题色圆标替代纯文本"1." */
-.modal.ev p.num{padding-left:34px;position:relative;margin-bottom:12px}
-.modal.ev p.num i{position:absolute;left:0;top:.34em;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:12.5px;font-weight:600;color:var(--accent);background:var(--line);border:1px solid var(--sheet-line);font-family:"Playfair Display",Georgia,serif}
+.modal.memo p.num{padding-left:34px;position:relative;margin-bottom:12px}
+.modal.memo p.num i{position:absolute;left:0;top:.34em;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:12.5px;font-weight:600;color:var(--accent);background:var(--line);border:1px solid var(--sheet-line);font-family:"Playfair Display",Georgia,serif}
 /* 细滚动条:贴边、半透明主题色 */
 .mbox,#letter{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--accent) 32%,transparent) transparent}
 .mbox::-webkit-scrollbar,#letter::-webkit-scrollbar{width:5px;height:5px}

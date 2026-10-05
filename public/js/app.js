@@ -44,11 +44,21 @@ const LOCK=(function(){
 })();
 const lb=$('lb');if(lb&&LOCK)lb.onclick=LOCK.relock;
 
+// 抓取失败才算"需要 Web 服务器";init 里的代码异常单独上报,避免误导排查方向
+let A,B,LF;
 try{
-  const [a,b,l]=await Promise.all([get('content/site.md'),get('content/timeline.md'),get('content/letter.md')]);
-  init(parseFront(a).meta,parseTimeline(b),parseFront(l));
+  [A,B,LF]=await Promise.all([get('content/site.md'),get('content/timeline.md'),get('content/letter.md')]);
 }catch(e){
-  $('ip').textContent='内容加载失败:请通过 Web 服务器访问(见 README)';console.error(e);
+  $('ip').textContent=location.protocol==='file:'
+    ?'内容加载失败:请通过 Web 服务器访问(见 README)'
+    :'内容加载失败:请检查网络后重试';
+  console.error('[fetch]',e);throw e;
+}
+try{
+  init(parseFront(A).meta,parseTimeline(B),parseFront(LF));
+}catch(e){
+  console.error('[init]',e);
+  $('ip').textContent='页面初始化出错,请刷新重试';
 }
 
 function init(c,events,letter){
@@ -68,18 +78,26 @@ function init(c,events,letter){
 
   // 通用弹窗
   const M=$('modal'),MB=$('mbody'),BOX=$('mbox');
-  let typeTimer=null,typing=false,closingLetter=false,closeLetterT=null;
+  let typeTimer=null,typing=false,closingLetter=false,closeLetterT=null,closeEnvT=null;
+  // 信封收起:.open 移除后前盖/翻盖不会自行过渡(展开是 animation forwards 驱动),
+  // 改由 .closing 显式收合:信纸先缩回(0.5s) → 回折盖落下(0.5s@0.5s) → 前盖合上(0.4s@0.7s),约 1.1s 后收敛。
+  function startEnvClose(){
+    const E=$('envwrap');
+    if(closeEnvT){clearTimeout(closeEnvT);closeEnvT=null}
+    E.classList.remove('open');E.classList.add('closing');
+    closeEnvT=setTimeout(()=>{closeEnvT=null;$('envwrap').classList.remove('closing')},1150);
+  }
   function openModal(html,cls){
     // 若上一封情书还停在缩回动画里,立即收敛信封状态,避免新旧弹窗互相打断
     if(closingLetter){
       closingLetter=false;if(closeLetterT){clearTimeout(closeLetterT);closeLetterT=null}
       M.classList.remove('closing');
       const BX=$('mbox');BX.classList.remove('flying');BX.style.cssText='';
-      $('envwrap').classList.remove('open');
-      setTimeout(restoreSeal,1000);
+      startEnvClose();
+      setTimeout(restoreSeal,1400);
     }
     MB.innerHTML=html;
-    M.classList.remove('ev','letter');if(cls)M.classList.add(cls);
+    M.classList.remove('memo','letter');if(cls)M.classList.add(cls);
     BOX.className='mbox'+(cls==='letter'?' paper':'');
     M.classList.add('open');document.body.style.overflow='hidden';document.body.classList.add('modal-on');BOX.scrollTop=0;
   }
@@ -105,13 +123,13 @@ function init(c,events,letter){
         M.classList.remove('open','closing');
         BX.classList.remove('flying');BX.style.cssText='';
         document.body.style.overflow='';document.body.classList.remove('modal-on');
-        $('envwrap').classList.remove('open');
-        setTimeout(restoreSeal,1000);
+        startEnvClose();
+        setTimeout(restoreSeal,1300);
         closingLetter=false;
       },580);
     }else{
       M.classList.remove('open');document.body.style.overflow='';document.body.classList.remove('modal-on');
-      restoreSeal();closingLetter=false;
+      startEnvClose();restoreSeal();closingLetter=false;
     }
   }
   function closeModal(){
@@ -161,7 +179,7 @@ function init(c,events,letter){
   $('tl').onclick=ev=>{
     const c=ev.target.closest('.ev');if(!c)return;
     const i=+c.dataset.i,d=parseDate(events[i].date);
-    openModal(`${d?`<time>${fmt(d)}</time>`:''}<h3>${esc(events[i].title)}</h3>${bodies[i]}`,'ev');
+    openModal(`${d?`<time>${fmt(d)}</time>`:''}<h3>${esc(events[i].title)}</h3>${bodies[i]}`,'memo');
   };
 
   // 计数器
@@ -200,7 +218,6 @@ function init(c,events,letter){
     if(st==='open'){$('pn').innerHTML='';return}
     if(st==='teased'){
       $('pn').innerHTML='';                       // 剧透卡片自己会说明,不再重复
-      $('tnum').textContent=`${events.length}`;
       $('tday').textContent=`第 ${N} 天 · ${fmt(un)}`;
       $('thint').textContent=L===1?'就是明天 ♥':`还有 ${L} 天 · 先数完最后几天`;
       return;
@@ -267,6 +284,7 @@ function init(c,events,letter){
       BX.style.transformOrigin='0 0';
       BX.style.transform=`translate(${s.left-t.left}px,${s.top-t.top}px) scale(${(s.width/t.width).toFixed(4)},${(s.height/t.height).toFixed(4)})`;
       BX.classList.add('flying');
+      void BX.offsetWidth; // 强制提交样式,确保缩回过渡当帧启动(否则会延迟到下一次回流)
       requestAnimationFrame(()=>requestAnimationFrame(()=>{
         M.classList.remove('noanim');
         BX.style.transition='transform .62s cubic-bezier(.3,.85,.25,1)';
@@ -288,6 +306,9 @@ function init(c,events,letter){
       c.appendChild(p);h.appendChild(c);S.appendChild(h);
     });
     S.classList.add('break');
+    // 若上一轮收起尚未结束,先取消,避免 .closing 与 .open 同时生效导致盖子状态冲突
+    if(closeEnvT){clearTimeout(closeEnvT);closeEnvT=null}
+    $('envwrap').classList.remove('closing');
     $('envwrap').classList.add('open');
     const r=S.getBoundingClientRect();
     burst(r.left+r.width/2,r.top+r.height/2);
