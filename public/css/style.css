@@ -87,37 +87,47 @@ h2 small{display:block;font-family:"Playfair Display",Georgia,serif;font-style:i
 body.modal-on .tl .ev:after{opacity:0}
 .ev.future{border-style:dashed}.ev.future:before{background:var(--paper);box-shadow:0 0 0 2px var(--accent),0 0 0 6px var(--line)}
 .env{text-align:center}
-/* 手绘信封:后板 + 露出的信纸 + V 形前袋 + 可翻开的顶盖;火漆封在盖尖 */
+/* 手绘信封:后板 + 露出的信纸 + V 形前袋 + 可翻开的顶盖;火漆封在盖尖。
+   前袋与顶盖套了 envClip 裁剪(index.html),否则两者在 (12,82)/(288,82) 的直角端会戳出后板圆角,
+   角上就会出现「圆弧台阶 + 底色缺口」。信纸与回折盖不裁剪,拆封时要飞出/翻到信封上方。 */
 .envwrap{position:relative;width:min(272px,74vw);margin:0 auto;cursor:pointer;-webkit-tap-highlight-color:transparent;animation:envfloat 5.2s ease-in-out infinite;filter:drop-shadow(0 20px 26px rgba(190,60,100,.24));transition:filter .35s}
 .envwrap:hover{filter:drop-shadow(0 26px 32px rgba(190,60,100,.32))}
 .envsvg{display:block;width:100%;height:auto}
 @keyframes envfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
 .envsvg .esheet{will-change:transform,filter;transition:transform .45s cubic-bezier(.55,.1,.6,1),filter .45s}
 .envwrap.open .esheet{transform:translateY(-80px);filter:drop-shadow(0 10px 12px rgba(75,15,42,.3));transition:transform .85s cubic-bezier(.22,1.22,.32,1) .64s,filter .85s .64s}
-.envsvg .flap{transform-box:fill-box;transform-origin:50% 0;transition:transform .42s cubic-bezier(.3,.6,.4,1) .5s}
-.envwrap.open .flap{animation:flapopen .42s .05s forwards}
+.envsvg .flap{transform-box:fill-box;transform-origin:50% 0;transition:transform .44s cubic-bezier(.3,.6,.4,1) .5s}
+.envwrap.open .flap{animation:flapopen .44s .05s forwards}
 @keyframes flapopen{0%{transform:scaleY(1);animation-timing-function:cubic-bezier(.32,0,.5,1)}58%{transform:scaleY(.22);animation-timing-function:cubic-bezier(.3,.6,.4,1)}100%{transform:scaleY(0)}}
-.envsvg .flapback{transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(0);transition:transform .28s cubic-bezier(.25,.7,.3,1) .38s}
-.envwrap.open .flapback{animation:flapBack .28s .34s cubic-bezier(.25,.7,.3,1) forwards}
-@keyframes flapBack{from{transform:scaleY(0)}to{transform:scaleY(1)}}
-/* 收起态:信纸先完全缩回(0–.5s) → 回折盖才落下(.5–.8s) → 前盖随后合上(.7–1.1s,
+.envsvg .flapback{transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(0) rotate(0deg);transition:transform .3s cubic-bezier(.25,.7,.3,1) .36s}
+.envwrap.open .flapback{animation:flapBack .52s .3s cubic-bezier(.22,.9,.3,1) forwards}
+/* 背面翻起:底边必须一直贴着折线,所以只压 scaleY、不缩宽度(scaleX 会把底边从折缝上拉开)。
+   过头 7.5% 再收 1.8% 落定,配 ±0.6° 摆动——纸片翻过折线后会晃一下才停,不会像拉伸出来。 */
+@keyframes flapBack{0%{transform:scaleY(.06) rotate(0deg)}58%{transform:scaleY(1.075) rotate(-.6deg)}78%{transform:scaleY(.982) rotate(.3deg)}100%{transform:scaleY(1) rotate(0deg)}}
+/* 收起态:信纸先完全缩回(0–.5s) → 回折盖才落下(.5–.84s) → 前盖随后合上(.7–1.1s,
    与回折盖尾段轻微重叠,读作同一只盖子绕折线翻过来,交接不脱节)。
    之前回折盖 .3s 就落、信纸 .5s 才缩完,信纸顶会横穿正在下塌的回折盖(穿模)。
    前盖/翻盖在展开时由 animation(forwards)驱动,单纯移除 .open 会让它一帧跳回,
    因此用 .closing 显式驱动收合;fill-mode:both 让延迟期内仍停在打开位,衔接不跳变。 */
 .envwrap.closing .esheet{transform:none;filter:none;transition:transform .5s cubic-bezier(.55,.1,.6,1),filter .5s}
-.envwrap.closing .flapback{animation:flapbackclose .3s .5s cubic-bezier(.25,.7,.3,1) both}
+.envwrap.closing .flapback{animation:flapbackclose .34s .5s cubic-bezier(.25,.7,.3,1) both}
 .envwrap.closing .flap{animation:flapclose .4s .7s cubic-bezier(.3,.6,.4,1) both}
 @keyframes flapclose{from{transform:scaleY(0)}to{transform:scaleY(1)}}
-@keyframes flapbackclose{from{transform:scaleY(1)}to{transform:scaleY(0)}}
+/* 收合:先微微立起(预备)再落回折线后面,不然会像"啪"地凭空消失 */
+@keyframes flapbackclose{0%{transform:scaleY(1) rotate(0deg)}20%{transform:scaleY(1.06) rotate(.5deg)}100%{transform:scaleY(0) rotate(-.25deg)}}
 .sealpos{position:absolute;left:50%;top:65%;transform:translate(-50%,-50%);z-index:2;pointer-events:none}
 #seal{position:relative;display:block;width:clamp(76px,25vw,96px);height:clamp(76px,25vw,96px);border:0;padding:0;background:none;font:inherit;cursor:pointer;pointer-events:auto;-webkit-tap-highlight-color:transparent;transition:transform .3s cubic-bezier(.2,.8,.3,1.4)}
-#seal svg{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 14px 26px rgba(110,10,30,.5)) drop-shadow(0 2px 5px rgba(110,10,30,.35))}
-#seal::after{content:"";position:absolute;inset:-16px;border-radius:50%;background:radial-gradient(circle,rgba(190,35,70,.42),transparent 70%);z-index:-1;animation:halo 2.6s ease-in-out infinite}
-@keyframes halo{0%,100%{opacity:.25;transform:scale(.92)}50%{opacity:.85;transform:scale(1.05)}}
+/* 火漆阴影:三层递进(贴纸接触影 → 中层 → 大范围环境影)。印章是象牙白蜡,
+   影色用玫瑰褐而不是深红,否则会在白蜡边缘糊出一圈红色污渍;三层叠出"压在纸上"的体积。 */
+#seal svg{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 1px 1.5px rgba(92,32,52,.42)) drop-shadow(0 6px 11px rgba(98,40,60,.28)) drop-shadow(0 18px 30px rgba(106,54,74,.15))}
+/* 光晕只负责"呼吸":低饱玫瑰色、幅度收小。之前是正圆 + 高饱和红,会把波浪边的白蜡罩成红圈 */
+#seal::after{content:"";position:absolute;inset:-18px;border-radius:50%;background:radial-gradient(circle,rgba(150,62,92,.22),rgba(150,62,92,.08) 50%,transparent 70%);z-index:-1;animation:halo 3.4s ease-in-out infinite}
+@keyframes halo{0%,100%{opacity:.5;transform:scale(.94)}50%{opacity:.92;transform:scale(1.05)}}
 #seal:hover{transform:scale(1.05) rotate(-2deg)}
-#seal:hover svg{filter:drop-shadow(0 18px 30px rgba(110,10,30,.55)) drop-shadow(0 2px 5px rgba(110,10,30,.35)) brightness(1.05)}
+#seal:hover svg{filter:drop-shadow(0 2px 2px rgba(92,32,52,.44)) drop-shadow(0 9px 15px rgba(98,40,60,.32)) drop-shadow(0 24px 38px rgba(106,54,74,.19)) brightness(1.04)}
 #seal:active{transform:scale(.93)}
+/* 按下:影收紧变实、整体压暗一点,读作被按进纸里 */
+#seal:active svg{filter:drop-shadow(0 .5px 1px rgba(92,32,52,.5)) drop-shadow(0 3px 5px rgba(98,40,60,.3)) brightness(.97)}
 #seal:focus-visible{outline:2px solid var(--accent);outline-offset:6px}
 #seal.break{animation:crack .55s cubic-bezier(.4,0,.8,1) forwards;pointer-events:none}
 #seal.break::after{animation:none;opacity:0}
