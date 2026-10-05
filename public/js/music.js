@@ -15,5 +15,3 @@ function ambient(){ // 原创柔和氛围音(无需外部文件)
 export function play(){if(hasFile)au.play().catch(()=>{});else amb=ambient();playing=true;$('mb').classList.add('on')}
 export function stop(){au.pause();amb&&amb.stop();amb=null;playing=false;$('mb').classList.remove('on')}
 $('mb').onclick=e=>{e.stopPropagation();playing?stop():play()};
-$('fb').onclick=e=>{e.stopPropagation();$('fi').click()};
-$('fi').onchange=e=>{const f=e.target.files[0];if(!f)return;stop();au.src=URL.createObjectURL(f);hasFile=true;play()};

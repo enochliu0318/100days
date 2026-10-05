@@ -1,6 +1,6 @@
 import {parseFront,parseTimeline,parseDate,esc} from './md.js';
 import {burst,size} from './fx.js';
-import {play,isPlaying,setSrc} from './music.js';
+import {play,isPlaying,setSrc} from './music.js?v=2';
 
 const $=id=>document.getElementById(id),p2=n=>String(n).padStart(2,'0');
 const get=async f=>{const r=await fetch(f,{cache:'no-cache'});if(!r.ok)throw new Error(f);return r.text()};

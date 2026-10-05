@@ -135,9 +135,16 @@ body.modal-on .ev:after{opacity:0}
 #letter{flex:1 1 0;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;scrollbar-gutter:stable;padding:0 12px 10px 2px;background-image:repeating-linear-gradient(transparent 0 37px,var(--line) 37px 38px);background-attachment:local;font-family:"Ma Shan Zheng","STKaiti","KaiTi","Noto Serif SC",serif;font-size:19px;line-height:38px;color:var(--pink);white-space:pre-wrap}
 .rb{display:none;margin:0;padding:9px 26px;border:1px solid var(--line);border-radius:30px;font:inherit;font-size:14px;color:var(--accent);letter-spacing:.2em;background:var(--card);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 8px 22px rgba(224,80,126,.12);cursor:pointer;transition:transform .25s,box-shadow .25s}
 .rb:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(224,80,126,.2)}
-#mus{position:fixed;right:14px;top:calc(env(safe-area-inset-top,0px) + 12px);z-index:85;display:flex;gap:8px}
-#mus button{width:42px;height:42px;border-radius:50%;font-size:17px;color:var(--accent);padding:0;font-family:inherit}
-#mus button.on{animation:spin 4s linear infinite}
+#mus{position:fixed;right:14px;top:calc(env(safe-area-inset-top,0px) + 12px);z-index:85;display:flex;gap:10px;align-items:center}
+#mus button{width:44px;height:44px;border-radius:50%;padding:0;color:var(--accent);font-size:17px;font-family:inherit;display:grid;place-items:center}
+#mb svg{width:100%;height:100%;display:block}
+#mb .spin{transform-origin:23px 24px}
+#mb.on .spin{animation:spin 3.2s linear infinite}
+#mb .arm{transform-origin:45px 11px;transform:rotate(66deg);transition:transform .55s cubic-bezier(.34,1.3,.5,1);filter:drop-shadow(0 1px 2px rgba(90,40,64,.35))}
+#mb.on .arm{transform:rotate(0deg)}
+#mb .iPause{display:none}
+#mb.on .iPause{display:block}
+#mb.on .iPlay{display:none}
 @keyframes spin{to{transform:rotate(360deg)}}
 footer{text-align:center;color:var(--soft);font-size:13px;letter-spacing:.12em;line-height:2}
 .modal{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(42,10,26,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
