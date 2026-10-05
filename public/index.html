@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffe1ea">
+<title>纪念日</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E💗%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,500&family=Noto+Serif+SC:wght@300;400;600&family=Ma+Shan+Zheng&display=swap">
+<link rel="stylesheet" href="css/style.css?v=21">
+</head>
+<body>
+<div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+<canvas id="cv"></canvas>
+<div id="lock"><div class="lcard glass"><div class="lheart">♥</div><p class="lt en">Only For You</p><p class="lh">这里藏着我们的日子</p><div class="ldots"><i></i><i></i><i></i><i></i></div><p class="lhint">提示 · 我们的第一天</p><div class="lkeys"><button>1</button><button>2</button><button>3</button><button>4</button><button>5</button><button>6</button><button>7</button><button>8</button><button>9</button><button class="ph" tabindex="-1">♥</button><button>0</button><button class="del" aria-label="删除"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.75 6a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-11l-5-5a1.5 1.5 0 0 1 0-2l5-5z"/><path d="M12.75 10l4 4m0-4l-4 4"/></svg></button></div></div></div>
+<div id="intro"><div class="hb"><i></i><i></i><i></i><div class="heart">♥</div></div><h1 class="en" id="ih"></h1><small id="is"></small><p id="ip">轻触屏幕 · 开启我们的纪念日</p></div>
+<div id="mus"><button id="mb" class="glass" title="音乐">♪</button><button id="fb" class="glass" title="选择音乐文件">＋</button><button id="lb" class="glass" title="再次锁定">🔒</button></div>
+<input type="file" id="fi" accept="audio/*" hidden>
+<main>
+<section class="hero">
+<p class="eyebrow">Our Story</p>
+<h1 class="names en" id="names"></h1>
+<div class="date" id="dt"></div>
+<div class="ring"><svg viewBox="0 0 220 220"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--accent2)"/><stop offset="1" style="stop-color:var(--accent)"/></linearGradient></defs><circle class="tr" cx="110" cy="110" r="96"/><circle class="pg" id="ring" cx="110" cy="110" r="96"/></svg>
+<div class="rc"><small>第</small><b id="dn">0</b><em id="goal"></em></div></div>
+<div class="grid"><div class="cell glass"><b id="d">0</b><span>天</span></div><div class="cell glass"><b id="h">0</b><span>时</span></div><div class="cell glass"><b id="m">0</b><span>分</span></div><div class="cell glass"><b id="s">0</b><span>秒</span></div></div>
+<div class="cd glass" id="cd"></div>
+</section>
+<section class="env"><h2><small>A Letter For You</small><span id="lt"></span></h2>
+<div class="envwrap" id="envwrap">
+<svg class="envsvg" viewBox="0 0 300 274" aria-hidden="true">
+<defs>
+<linearGradient id="peB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe6ee"/><stop offset="1" stop-color="#f3b6c9"/></linearGradient>
+<linearGradient id="peF" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffdbe4"/><stop offset="1" stop-color="#f0a6bd"/></linearGradient>
+<linearGradient id="peS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#632a49"/><stop offset=".5" stop-color="#4d1c35"/><stop offset="1" stop-color="#340f25"/></linearGradient>
+<linearGradient id="peG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f8c3d3"/><stop offset="1" stop-color="#e89ab5"/></linearGradient>
+<linearGradient id="peR" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9a0ba"/><stop offset="1" stop-color="#f6c6d5"/></linearGradient>
+</defs>
+<rect x="12" y="80" width="276" height="176" rx="12" fill="url(#peB)" stroke="#ecabc0" stroke-width="1.5"/>
+<g class="flapback"><path d="M12 82 L288 82 L150 6 Z" fill="url(#peR)" stroke="#dd8ca8" stroke-width="1.2" stroke-linejoin="round"/><path d="M26 82 L150 20 L274 82" fill="none" stroke="#e8a9c1" stroke-opacity=".45"/></g>
+<g class="esheet">
+<rect x="42" y="90" width="216" height="166" rx="8" fill="url(#peS)" stroke="#2f0e20" stroke-opacity=".65" stroke-width="1.2"/>
+<rect x="48" y="96" width="204" height="154" rx="6" fill="none" stroke="#d9a06a" stroke-opacity=".45"/>
+<g stroke="#e0ac7f" stroke-width="2.6" stroke-linecap="round" opacity=".42">
+<line x1="66" y1="128" x2="236" y2="128"/><line x1="66" y1="150" x2="236" y2="150"/><line x1="66" y1="172" x2="236" y2="172"/><line x1="66" y1="194" x2="198" y2="194"/><line x1="66" y1="216" x2="236" y2="216"/>
+</g>
+<path d="M150 243c-4.6-5.1-10.4-8.7-10.4-13.4 0-3.8 3.2-6.5 6.5-6.5 2.1 0 3.5 1.4 3.9 2.7.4-1.3 1.8-2.7 3.9-2.7 3.3 0 6.5 2.7 6.5 6.5 0 4.7-5.8 8.3-10.4 13.4z" fill="#f097b5" opacity=".92"/>
+</g>
+<path d="M12 82 L150 178 L288 82 L288 244 C288 250.6 282.5 256 276 256 L24 256 C17.5 256 12 250.6 12 244 Z" fill="url(#peF)" stroke="#ecabc0" stroke-width="1.5"/>
+<path d="M12 82 L150 178 L288 82" fill="none" stroke="#c9768f" stroke-opacity=".5" stroke-width="3" transform="translate(0,3)"/>
+<path d="M12 82 L150 178 L288 82" fill="none" stroke="#e18fa9" stroke-opacity=".65" stroke-width="1.5"/>
+<g class="flap"><path d="M12 82 L288 82 L150 178 Z" fill="url(#peG)" stroke="#e18fa9" stroke-width="1.5" stroke-linejoin="round"/><path d="M28 92 L150 169 L272 92" fill="none" stroke="#fdeaf1" stroke-opacity=".5" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="1 8"/><path d="M150 113c-4.2-4.6-9.4-7.8-9.4-12.1 0-3.5 2.9-6 6-6 1.9 0 3.2 1.3 3.6 2.5.4-1.2 1.7-2.5 3.6-2.5 3.1 0 6 2.5 6 6 0 4.3-5.2 7.5-9.4 12.1z" fill="#c28a5b" opacity=".5"/></g>
+</svg>
+<div class="sealpos"><button id="seal" aria-label="拆开火漆封印,阅读这封信"><svg viewBox="0 0 200 200" aria-hidden="true">
+<defs>
+<radialGradient id="wxB" cx="34%" cy="26%" r="92%">
+<stop offset="0%" stop-color="#c25263"/><stop offset="36%" stop-color="#9d1f33"/><stop offset="70%" stop-color="#7c1122"/><stop offset="100%" stop-color="#4f0812"/>
+</radialGradient>
+<filter id="wxE" x="-15%" y="-15%" width="130%" height="130%">
+<feTurbulence type="turbulence" baseFrequency="0.032" numOctaves="2" seed="14" result="n1"/>
+<feDisplacementMap in="SourceGraphic" in2="n1" scale="15" result="d1"/>
+<feTurbulence type="fractalNoise" baseFrequency="0.14" numOctaves="2" seed="5" result="n2"/>
+<feDisplacementMap in="d1" in2="n2" scale="7"/>
+</filter>
+<filter id="wxG">
+<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" seed="9" result="no"/>
+<feColorMatrix in="no" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .22 0" result="sp"/>
+<feComposite in="sp" in2="SourceAlpha" operator="in" result="ck"/>
+<feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="ck"/></feMerge>
+</filter>
+<filter id="wxS"><feGaussianBlur stdDeviation="7"/></filter>
+<filter id="ws1"><feGaussianBlur stdDeviation="1"/></filter>
+</defs>
+<g filter="url(#wxE)">
+<path d="M100 12 C130 8 156 20 170 42 C184 62 190 88 182 112 C174 136 156 158 130 170 C104 182 74 182 52 168 C30 154 16 132 14 106 C12 80 22 54 42 36 C60 20 78 15 100 12 Z" fill="url(#wxB)"/>
+<path d="M100 12 C130 8 156 20 170 42 C184 62 190 88 182 112 C174 136 156 158 130 170 C104 182 74 182 52 168 C30 154 16 132 14 106 C12 80 22 54 42 36 C60 20 78 15 100 12 Z" fill="none" stroke="#40060e" stroke-opacity=".4" stroke-width="9" transform="translate(100,100) scale(.92) translate(-100,-100)"/>
+<circle cx="60" cy="166" r="7" fill="#8f1426"/><circle cx="146" cy="160" r="5" fill="#a32a40"/>
+<ellipse cx="74" cy="54" rx="42" ry="27" fill="#fff" opacity=".26" filter="url(#wxS)"/>
+<ellipse cx="132" cy="152" rx="48" ry="32" fill="#35040c" opacity=".35" filter="url(#wxS)"/>
+<g filter="url(#wxG)"><path d="M100 12 C130 8 156 20 170 42 C184 62 190 88 182 112 C174 136 156 158 130 170 C104 182 74 182 52 168 C30 154 16 132 14 106 C12 80 22 54 42 36 C60 20 78 15 100 12 Z" fill="#fff"/></g>
+</g>
+<g fill="none">
+<circle cx="99.1" cy="99.1" r="64" stroke="#38040c" stroke-opacity=".55" stroke-width="2.6"/>
+<circle cx="101" cy="101.1" r="64" stroke="#ff92a4" stroke-opacity=".4" stroke-width="1.6"/>
+<circle cx="100" cy="100" r="64" stroke="#570914" stroke-width="2.2"/>
+<circle cx="99.4" cy="99.4" r="56" stroke="#47060f" stroke-opacity=".5" stroke-width="1.4"/>
+<circle cx="100.5" cy="100.6" r="56" stroke="#ff92a4" stroke-opacity=".26" stroke-width="1"/>
+</g>
+<g id="mono">
+<path d="M100 94 C94.6 88 88 84 88 78 C88 73.4 91.8 70.4 95.6 70.4 C97.9 70.4 99.6 72 100 73.6 C100.4 72 102.1 70.4 104.4 70.4 C108.2 70.4 112 73.4 112 78 C112 84 105.4 88 100 94 Z" fill="#2e0309" opacity=".45" filter="url(#ws1)" transform="translate(-1,-1.2)"/>
+<path d="M100 94 C94.6 88 88 84 88 78 C88 73.4 91.8 70.4 95.6 70.4 C97.9 70.4 99.6 72 100 73.6 C100.4 72 102.1 70.4 104.4 70.4 C108.2 70.4 112 73.4 112 78 C112 84 105.4 88 100 94 Z" fill="#ff92a4" opacity=".5" filter="url(#ws1)" transform="translate(1.1,1.3)"/>
+<path d="M100 94 C94.6 88 88 84 88 78 C88 73.4 91.8 70.4 95.6 70.4 C97.9 70.4 99.6 72 100 73.6 C100.4 72 102.1 70.4 104.4 70.4 C108.2 70.4 112 73.4 112 78 C112 84 105.4 88 100 94 Z" fill="#570914"/>
+<text x="100" y="133" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-style="italic" font-weight="500" font-size="28" letter-spacing="2" fill="#2e0309" opacity=".4" filter="url(#ws1)" transform="translate(-1,-1.2)">E &amp; S</text>
+<text x="100" y="133" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-style="italic" font-weight="500" font-size="28" letter-spacing="2" fill="#ff92a4" opacity=".5" filter="url(#ws1)" transform="translate(1.1,1.3)">E &amp; S</text>
+<text x="100" y="133" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-style="italic" font-weight="500" font-size="28" letter-spacing="2" fill="#570914">E &amp; S</text>
+</g>
+</svg></button></div>
+</div>
+<p class="hint" id="hint">轻触封蜡,拆开这封信</p>
+</section>
+
+<section><h2><small>Our Moments</small>回忆时间轴</h2><div class="tl" id="tl"></div></section>
+<footer class="en">Tap anywhere · make a wish ♥<br><span id="ft"></span></footer>
+</main>
+<div class="modal" id="modal"><div class="mwrap"><button class="mx" id="mx" aria-label="关闭">×</button><div class="mbox" id="mbox"><div class="mbody" id="mbody"></div></div><div class="mfoot" id="mfoot"><button class="rb" id="rb">再读一遍</button></div></div></div>
+<script type="module" src="js/app.js?v=20"></script>
+</body>
+</html>

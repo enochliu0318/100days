@@ -1,0 +1,192 @@
+:root{--bg1:#fff6f8;--bg2:#ffe1ea;--card:rgba(255,255,255,.58);--bd:rgba(255,255,255,.75);--ink:#5a2840;--soft:#9b5f77;--accent:#e0507e;--accent2:#ff9bb8;--gold:#c28a5b;--line:rgba(224,80,126,.16);--paper:#fffaf3;--pink:#4a2236;--bo:.55;--sheet:rgba(255,252,253,.9);--sheet-line:rgba(224,80,126,.2);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg1:#1d0e16;--bg2:#331827;--card:rgba(66,30,48,.52);--bd:rgba(255,255,255,.12);--ink:#ffe6ee;--soft:#e5a9bf;--accent:#ff7fa8;--accent2:#ffb0c8;--gold:#e2b185;--line:rgba(255,127,168,.22);--paper:#3a2230;--pink:#ffe6ee;--bo:.28;--sheet:rgba(38,20,31,.9);--sheet-line:rgba(255,127,168,.24)}}
+:root[data-theme="dark"]{--bg1:#1d0e16;--bg2:#331827;--card:rgba(66,30,48,.52);--bd:rgba(255,255,255,.12);--ink:#ffe6ee;--soft:#e5a9bf;--accent:#ff7fa8;--accent2:#ffb0c8;--gold:#e2b185;--line:rgba(255,127,168,.22);--paper:#3a2230;--pink:#ffe6ee;--bo:.28;--sheet:rgba(38,20,31,.9);--sheet-line:rgba(255,127,168,.24)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2)) fixed;color:var(--ink);font-family:"Noto Serif SC","Songti SC","PingFang SC",serif;font-weight:300;line-height:1.8;min-height:100vh;overflow-x:hidden}
+.blob{position:fixed;border-radius:50%;filter:blur(70px);opacity:var(--bo);z-index:0;animation:fl 16s ease-in-out infinite alternate}
+.b1{width:340px;height:340px;background:#ffb3c9;top:-90px;left:-80px}.b2{width:300px;height:300px;background:#ffd6a8;bottom:-60px;right:-90px;animation-delay:-5s}.b3{width:260px;height:260px;background:#d8bcff;top:42%;left:50%;animation-delay:-9s}
+@keyframes fl{to{transform:translate(40px,-50px) scale(1.15)}}
+canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:90}
+.en{font-family:"Playfair Display",Georgia,serif;font-style:italic;font-weight:500}
+.glass{background:var(--card);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--bd);box-shadow:0 12px 32px rgba(224,80,126,.12)}
+#intro{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,var(--bg1),var(--bg2));transition:opacity 1.3s,visibility 1.3s,transform 1.3s;text-align:center;padding:24px}
+#intro.gone{opacity:0;visibility:hidden;transform:scale(1.08)}
+.hb{position:relative;width:150px;height:150px;display:flex;align-items:center;justify-content:center}
+.hb i{position:absolute;inset:0;border-radius:50%;border:1.5px solid var(--accent);opacity:0;animation:rip 3s infinite}.hb i:nth-child(2){animation-delay:1s}.hb i:nth-child(3){animation-delay:2s}
+@keyframes rip{0%{transform:scale(.4);opacity:.7}100%{transform:scale(1.5);opacity:0}}
+.heart{font-size:72px;color:var(--accent);text-shadow:0 0 28px var(--accent2);animation:beat 1.5s infinite}
+@keyframes beat{0%,100%{transform:scale(1)}30%{transform:scale(1.18)}60%{transform:scale(.96)}}
+#intro h1{font-size:38px;margin:22px 0 4px;color:var(--ink)}#intro h1 span{color:var(--gold)}
+#intro small{letter-spacing:.35em;color:var(--soft);font-size:12px}
+#intro p{color:var(--soft);margin:34px 0 0;font-size:14px;letter-spacing:.2em;animation:fade 2s infinite alternate}
+@keyframes fade{from{opacity:.3}to{opacity:1}}
+main{position:relative;z-index:2;max-width:520px;margin:0 auto;padding:44px 20px 80px}
+section{margin-bottom:60px;opacity:0;transform:translateY(28px);transition:all 1s cubic-bezier(.2,.7,.2,1)}
+section.show{opacity:1;transform:none}
+.hero{text-align:center}
+.eyebrow{letter-spacing:.4em;font-size:11px;color:var(--gold);margin:0 0 6px;text-transform:uppercase}
+.names{font-size:42px;margin:0;line-height:1.2;color:var(--ink)}.names span{color:var(--gold);padding:0 4px}
+.date{display:flex;align-items:center;gap:12px;justify-content:center;color:var(--soft);font-size:13px;letter-spacing:.25em;margin:10px 0 6px}
+.date:before,.date:after{content:"";height:1px;width:42px;background:linear-gradient(90deg,transparent,var(--gold))}.date:after{transform:scaleX(-1)}
+.ring{position:relative;width:236px;height:236px;margin:22px auto 26px}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg);filter:drop-shadow(0 0 10px rgba(224,80,126,.35))}
+.ring .tr{fill:none;stroke:var(--line);stroke-width:8}
+.ring .pg{fill:none;stroke:url(#g);stroke-width:8;stroke-linecap:round;stroke-dasharray:603;stroke-dashoffset:603;transition:stroke-dashoffset 2.4s cubic-bezier(.3,.8,.3,1)}
+.rc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.rc small{font-size:13px;letter-spacing:.3em;color:var(--soft)}
+.rc b{font-family:"Playfair Display",Georgia,serif;font-size:76px;line-height:1;font-weight:500;color:var(--accent);margin:2px 0;transform:translateY(-.24em)}
+.rc em{font-style:normal;font-size:12px;color:var(--soft);letter-spacing:.15em}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.cell{border-radius:18px;padding:14px 0 10px}
+.cell b{display:block;font-family:"Playfair Display",Georgia,serif;font-size:28px;font-weight:500;color:var(--accent);font-variant-numeric:tabular-nums;line-height:1.2}
+.cell span{font-size:12px;color:var(--soft);letter-spacing:.2em}
+.cd{display:inline-block;margin-top:20px;padding:8px 20px;border-radius:30px;font-size:14px;color:var(--ink);letter-spacing:.06em}
+h2{text-align:center;font-weight:400;font-size:24px;letter-spacing:.25em;margin:0 0 30px;line-height:1.4}
+h2 small{display:block;font-family:"Playfair Display",Georgia,serif;font-style:italic;letter-spacing:.1em;font-size:15px;color:var(--gold);margin-bottom:2px}
+.tl{position:relative;padding-left:32px}
+.tl:before{content:"";position:absolute;left:8px;top:14px;bottom:14px;width:2px;background:linear-gradient(var(--accent),var(--accent2),transparent);border-radius:2px}
+.ev{position:relative;border-radius:18px;padding:15px 46px 15px 18px;margin-bottom:14px;cursor:pointer;transition:transform .25s,box-shadow .25s}
+.ev:before{content:"";position:absolute;left:-30px;top:22px;width:12px;height:12px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 5px var(--line),0 0 14px var(--accent)}
+.ev time{display:inline-block;font-size:12px;color:#fff;background:linear-gradient(90deg,var(--accent),var(--accent2));padding:1px 12px;border-radius:20px;letter-spacing:.08em}
+.ev h3{margin:6px 0 0;font-size:17px;font-weight:600}
+.ev .ex{margin:5px 0 0;font-size:13px;color:var(--soft);line-height:1.7;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ev:after{content:"›";position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:24px;line-height:1;color:var(--accent);opacity:.5;transition:transform .25s,opacity .25s}
+.ev:hover{transform:translateY(-3px);box-shadow:0 16px 32px rgba(224,80,126,.18)}
+.ev:hover:after{transform:translate(4px,-50%);opacity:1}
+/* 弹窗打开时隐藏下方卡片的箭头,避免从半透明遮罩里透出来干扰阅读 */
+body.modal-on .ev:after{opacity:0}
+.ev.future{border-style:dashed}.ev.future:before{background:var(--paper);box-shadow:0 0 0 2px var(--accent),0 0 0 6px var(--line)}
+.env{text-align:center}
+/* 手绘信封:后板 + 露出的信纸 + V 形前袋 + 可翻开的顶盖;火漆封在盖尖 */
+.envwrap{position:relative;width:min(272px,74vw);margin:0 auto;cursor:pointer;-webkit-tap-highlight-color:transparent;animation:envfloat 5.2s ease-in-out infinite;filter:drop-shadow(0 20px 26px rgba(190,60,100,.24));transition:filter .35s}
+.envwrap:hover{filter:drop-shadow(0 26px 32px rgba(190,60,100,.32))}
+.envsvg{display:block;width:100%;height:auto}
+@keyframes envfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.envsvg .esheet{will-change:transform,filter;transition:transform .45s cubic-bezier(.55,.1,.6,1),filter .45s}
+.envwrap.open .esheet{transform:translateY(-80px);filter:drop-shadow(0 10px 12px rgba(75,15,42,.3));transition:transform .85s cubic-bezier(.22,1.22,.32,1) .64s,filter .85s .64s}
+.envsvg .flap{transform-box:fill-box;transform-origin:50% 0;transition:transform .42s cubic-bezier(.3,.6,.4,1) .5s}
+.envwrap.open .flap{animation:flapopen .42s .05s forwards}
+@keyframes flapopen{0%{transform:scaleY(1);animation-timing-function:cubic-bezier(.32,0,.5,1)}58%{transform:scaleY(.22);animation-timing-function:cubic-bezier(.3,.6,.4,1)}100%{transform:scaleY(0)}}
+.envsvg .flapback{transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(0);transition:transform .28s cubic-bezier(.25,.7,.3,1) .38s}
+.envwrap.open .flapback{animation:flapBack .28s .34s cubic-bezier(.25,.7,.3,1) forwards}
+@keyframes flapBack{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.sealpos{position:absolute;left:50%;top:65%;transform:translate(-50%,-50%);z-index:2;pointer-events:none}
+#seal{position:relative;display:block;width:clamp(76px,25vw,96px);height:clamp(76px,25vw,96px);border:0;padding:0;background:none;font:inherit;cursor:pointer;pointer-events:auto;-webkit-tap-highlight-color:transparent;transition:transform .3s cubic-bezier(.2,.8,.3,1.4)}
+#seal svg{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 14px 26px rgba(110,10,30,.5)) drop-shadow(0 2px 5px rgba(110,10,30,.35))}
+#seal::after{content:"";position:absolute;inset:-16px;border-radius:50%;background:radial-gradient(circle,rgba(190,35,70,.42),transparent 70%);z-index:-1;animation:halo 2.6s ease-in-out infinite}
+@keyframes halo{0%,100%{opacity:.25;transform:scale(.92)}50%{opacity:.85;transform:scale(1.05)}}
+#seal:hover{transform:scale(1.05) rotate(-2deg)}
+#seal:hover svg{filter:drop-shadow(0 18px 30px rgba(110,10,30,.55)) drop-shadow(0 2px 5px rgba(110,10,30,.35)) brightness(1.05)}
+#seal:active{transform:scale(.93)}
+#seal:focus-visible{outline:2px solid var(--accent);outline-offset:6px}
+#seal.break{animation:crack .55s cubic-bezier(.4,0,.8,1) forwards;pointer-events:none}
+#seal.break::after{animation:none;opacity:0}
+@keyframes crack{0%{transform:scale(1) rotate(0)}30%{transform:scale(1.16) rotate(5deg)}100%{transform:scale(1.04) rotate(-2deg)}}
+/* 掰开:复制成左右两半,沿锯齿线撕开、坠落淡出 */
+#seal .half{position:absolute;inset:0;pointer-events:none}
+#seal .half svg{position:absolute;inset:0}
+#seal .half.l{clip-path:polygon(0 0,50% 0,44% 16%,55% 33%,45% 51%,55% 68%,46% 85%,50% 100%,0 100%)}
+#seal .half.r{clip-path:polygon(50% 0,100% 0,100% 100%,50% 100%,46% 85%,55% 68%,45% 51%,55% 33%,44% 16%)}
+#seal.break>svg{visibility:hidden}
+#seal.break .half.l{animation:snapL .6s cubic-bezier(.5,0,.8,.4) forwards}
+#seal.break .half.r{animation:snapR .6s cubic-bezier(.5,0,.8,.4) forwards}
+@keyframes snapL{0%{transform:translate(0,0) rotate(0);opacity:1}35%{transform:translate(-3px,2px) rotate(3deg);opacity:1}100%{transform:translate(-38px,34px) rotate(-34deg);opacity:0}}
+#seal.break .half svg{filter:none}
+@keyframes snapR{0%{transform:translate(0,0) rotate(0);opacity:1}35%{transform:translate(3px,2px) rotate(-3deg);opacity:1}100%{transform:translate(38px,36px) rotate(30deg);opacity:0}}
+#seal.pop{animation:sealpop .5s cubic-bezier(.3,1.4,.4,1)}
+@keyframes sealpop{from{transform:scale(.4);opacity:0}}
+.hint{margin:16px 0 0;font-size:13px;color:var(--soft);letter-spacing:.2em;animation:hintfloat 2.2s ease-in-out infinite}
+@keyframes hintfloat{0%,100%{transform:translateY(0);opacity:.7}50%{transform:translateY(5px);opacity:1}}
+.paper{position:relative;text-align:left;background:var(--paper);border-radius:4px 4px 16px 16px;padding:34px 22px 22px;box-shadow:0 18px 44px rgba(120,40,70,.25);transform-origin:top center}
+.paper:before{content:"";position:absolute;top:-12px;left:50%;width:96px;height:26px;margin-left:-48px;background:linear-gradient(rgba(255,170,195,.75),rgba(255,170,195,.55));transform:rotate(-2deg);border-radius:2px;box-shadow:0 2px 5px rgba(120,40,70,.12)}
+.to{font-size:16px;color:var(--gold);margin:0 0 4px;line-height:38px}
+#letter.typing::after{content:"▍";margin-left:2px;color:var(--accent);opacity:.75;animation:caret .9s steps(1) infinite}
+@keyframes caret{50%{opacity:0}}
+#letter{flex:1 1 0;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;scrollbar-gutter:stable;padding:0 12px 10px 2px;background-image:repeating-linear-gradient(transparent 0 37px,var(--line) 37px 38px);background-attachment:local;font-family:"Ma Shan Zheng","STKaiti","KaiTi","Noto Serif SC",serif;font-size:19px;line-height:38px;color:var(--pink);white-space:pre-wrap}
+.rb{display:none;margin:0;padding:9px 26px;border:1px solid var(--line);border-radius:30px;font:inherit;font-size:14px;color:var(--accent);letter-spacing:.2em;background:var(--card);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 8px 22px rgba(224,80,126,.12);cursor:pointer;transition:transform .25s,box-shadow .25s}
+.rb:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(224,80,126,.2)}
+#mus{position:fixed;right:14px;top:calc(env(safe-area-inset-top,0px) + 12px);z-index:85;display:flex;gap:8px}
+#mus button{width:42px;height:42px;border-radius:50%;font-size:17px;color:var(--accent);padding:0;font-family:inherit}
+#mus button.on{animation:spin 4s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+footer{text-align:center;color:var(--soft);font-size:13px;letter-spacing:.12em;line-height:2}
+.modal{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(42,10,26,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+/* 弹窗需高于粒子画布(canvas 是 z-index:90),否则飘落花瓣直接压在正文上,读不清 */
+.modal.ev,.modal.letter{z-index:95}
+.modal.open{opacity:1;visibility:visible}
+.mwrap{position:relative;width:100%;max-width:520px}
+.mbox{width:100%;max-height:min(78vh,660px);overflow-y:auto;-webkit-overflow-scrolling:touch;border-radius:20px;transform:translateY(28px) scale(.96);transition:transform .45s cubic-bezier(.2,.8,.3,1)}
+.modal.open .mbox{transform:none}
+.modal.noanim{visibility:hidden!important}
+.modal.open.closing{opacity:0;visibility:hidden;transition:opacity .34s .22s,visibility .34s .22s}
+.modal.open.closing .mx,.modal.open.closing .mfoot{opacity:0;transition:opacity .2s}
+.mx{position:absolute;top:-13px;right:-9px;width:36px;height:36px;border-radius:50%;border:1px solid var(--bd);background:var(--card);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:var(--soft);font-size:0;line-height:0;padding:0;cursor:pointer;z-index:2;box-shadow:0 6px 16px rgba(120,40,70,.18);transition:transform .3s,color .3s}
+/* ✕ 用两条杆画,几何中心精确对齐(字符 × 受字体基线度量影响会偏下) */
+.mx::before,.mx::after{content:"";position:absolute;left:50%;top:50%;width:14px;height:1.6px;border-radius:2px;background:currentColor;transform:translate(-50%,-50%) rotate(45deg)}
+.mx::after{transform:translate(-50%,-50%) rotate(-45deg)}
+.mx:hover{transform:rotate(90deg);color:var(--accent)}
+.mbody{padding:26px}
+/* 时间轴弹窗:专用阅读面板。--sheet 近乎不透明,让文字脱离背后动态 blob/渐变;
+   字重 400(继承 body 的 300 在半透明底上笔画发虚)、字号行距放大、行宽收敛到 ~34 字/行 */
+.modal.ev .mbox{background:var(--sheet);backdrop-filter:blur(20px) saturate(1.1);-webkit-backdrop-filter:blur(20px) saturate(1.1);border:1px solid var(--sheet-line);box-shadow:0 24px 60px rgba(120,40,70,.28);text-align:left}
+.modal.ev .mbody{padding:26px 26px 22px}
+.modal.ev time{display:inline-block;font-size:12.5px;font-weight:500;color:#fff;background:linear-gradient(90deg,var(--accent),var(--accent2));padding:2px 13px;border-radius:20px;letter-spacing:.08em}
+.modal.ev h3{margin:12px 0 14px;font-size:21px;font-weight:600;color:var(--ink);letter-spacing:.04em;line-height:1.45}
+.modal.ev p{margin:0 0 14px;font-size:16.5px;font-weight:400;color:var(--ink);line-height:1.95;letter-spacing:.02em;overflow-wrap:break-word;text-align:justify}
+/* 首段做导语:略大一号 + 左侧主题色竖线,进入正文后层次分明 */
+.modal.ev p:first-of-type{margin-top:2px;font-size:17px;color:var(--accent);font-weight:600;letter-spacing:.03em;text-indent:0;padding-left:12px;border-left:3px solid var(--accent);border-radius:2px}
+.modal.ev img{display:block;width:100%;border-radius:12px;margin:14px 0}
+/* 对比标签:把"日常状态 / 和你的状态"提到段首,长段落立刻可扫读 */
+.modal.ev .lab{font-weight:600;color:var(--accent);letter-spacing:.03em}
+/* .alt 独占一行:JS 只输出正文,"和你的状态"由 :before 生成,避免"你的状态"重复两次 */
+.modal.ev .lab.alt{display:block;color:var(--gold);margin:10px 0 2px;font-size:.92em}
+.modal.ev .lab.alt:before{content:"你的状态";font-size:1em;letter-spacing:.1em;font-weight:600;opacity:.95;margin-right:.5em}
+/* 编号条目:主题色圆标替代纯文本"1." */
+.modal.ev p.num{padding-left:34px;position:relative;margin-bottom:12px}
+.modal.ev p.num i{position:absolute;left:0;top:.34em;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:12.5px;font-weight:600;color:var(--accent);background:var(--line);border:1px solid var(--sheet-line);font-family:"Playfair Display",Georgia,serif}
+/* 细滚动条:贴边、半透明主题色 */
+.mbox,#letter{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--accent) 32%,transparent) transparent}
+.mbox::-webkit-scrollbar,#letter::-webkit-scrollbar{width:5px;height:5px}
+.mbox::-webkit-scrollbar-track,#letter::-webkit-scrollbar-track{background:transparent}
+.mbox::-webkit-scrollbar-thumb,#letter::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--accent) 32%,transparent);border-radius:99px}
+.mbox::-webkit-scrollbar-thumb:hover,#letter::-webkit-scrollbar-thumb:hover{background:color-mix(in srgb,var(--accent) 55%,transparent)}
+/* 信纸皮肤:弹窗高度固定,纸不裁切,由 #letter 内部滚动 */
+.mbox.paper{height:min(78vh,660px);overflow:visible}
+.mbox.paper .mbody{height:100%;display:flex;flex-direction:column;padding:0;opacity:1;transition:opacity .35s}
+.mbox.paper.flying .mbody{opacity:0;transition:opacity .2s}
+.mbox.paper::before{transition:opacity .3s}
+.mbox.paper.flying::before{opacity:0;transition:opacity .15s}
+.mbox.paper .paper{flex:1;min-height:0;display:flex;flex-direction:column;overflow:visible}
+.mbox.paper .mx{border-color:rgba(255,255,255,.6)}
+/* 再读一遍:信卡片外、正下方;预留固定高度避免按钮出现时弹窗跳动 */
+.mfoot{display:none}
+.modal.letter .mfoot{display:flex;align-items:flex-start;justify-content:center;height:54px;padding-top:14px;box-sizing:border-box}
+.modal.letter .mbox.paper{height:calc(min(78vh,660px) - 54px)}
+/* 首页密码锁 */
+#lock{position:fixed;inset:0;z-index:110;display:flex;align-items:center;justify-content:center;padding:24px;background:linear-gradient(160deg,var(--bg1),var(--bg2));transition:opacity 1.1s,visibility 1.1s,transform 1.1s}
+#lock.gone{opacity:0;visibility:hidden;transform:scale(1.08)}
+.lcard{width:min(330px,88vw);border-radius:28px;padding:36px 24px 30px;text-align:center}
+.lheart{font-size:32px;color:var(--accent);text-shadow:0 0 24px var(--accent2);animation:beat 1.5s infinite}
+.lt{margin:12px 0 2px;font-size:14px;letter-spacing:.35em;color:var(--gold)}
+.lh{margin:0;font-size:15px;color:var(--ink);letter-spacing:.14em}
+.ldots{display:flex;justify-content:center;gap:18px;margin:26px 0 8px}
+.ldots i{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--accent);opacity:.4;transition:all .25s}
+.ldots i.on{background:var(--accent);opacity:1;transform:scale(1.3);box-shadow:0 0 14px var(--accent2)}
+#lock.ok .ldots i{background:var(--gold);border-color:var(--gold);box-shadow:0 0 16px var(--gold);animation:beat 1s infinite}
+.lhint{min-height:1.5em;margin:4px 0 20px;font-size:12px;letter-spacing:.22em;color:var(--soft)}
+#lock.ok .lhint{color:var(--accent)}
+#lock.wrong .ldots i{border-color:#d24a63;opacity:.85}
+.lkeys{display:grid;grid-template-columns:repeat(3,62px);gap:13px;justify-content:center}
+.lkeys button{display:flex;align-items:center;justify-content:center;width:62px;height:62px;border-radius:50%;border:1px solid var(--bd);background:var(--card);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 6px 16px rgba(224,80,126,.1);color:var(--ink);font:italic 500 21px "Playfair Display",Georgia,serif;line-height:1;font-variant-numeric:lining-nums;padding:0 0 3px;cursor:pointer;transition:transform .15s,background .3s,color .3s}
+.lkeys button:active{transform:scale(.88);background:var(--accent);color:#fff}
+/* 数字键用 flex 居中 + lining-nums(Playfair/Georgia 默认是旧体数字,有升降部会让每个数字高低不一);
+   padding-bottom 抵消字体 ascent/descent 不对称带来的整体下沉;♥ 与 ⌫ 不需要该补偿 */
+.lkeys .ph,.lkeys .del{padding-bottom:0}
+.lkeys .ph{border:none;background:none;box-shadow:none;color:var(--accent);opacity:.8;font-size:26px;font-style:normal;cursor:default}
+.lkeys .ph:active{transform:none;background:none;color:var(--accent)}
+.lkeys .del{color:var(--ink)}
+.lkeys .del svg{width:22px;height:22px;display:block}
+#lock.shake .lcard{animation:shake .55s}
+@keyframes shake{0%,100%{transform:none}15%{transform:translateX(-10px)}35%{transform:translateX(9px)}55%{transform:translateX(-6px)}75%{transform:translateX(4px)}}
+@media (max-width:340px){.lkeys{grid-template-columns:repeat(3,56px);gap:10px}.lkeys button{width:56px;height:56px}}
