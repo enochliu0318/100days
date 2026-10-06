@@ -72,20 +72,51 @@ section.show{opacity:1;transform:none}
 .cd{display:inline-block;margin-top:20px;padding:8px 20px;border-radius:30px;font-size:14px;color:var(--ink);letter-spacing:.06em}
 h2{text-align:center;font-weight:400;font-size:24px;letter-spacing:.25em;margin:0 0 30px;line-height:1.4}
 h2 small{display:block;font-family:"Playfair Display",Georgia,serif;font-style:italic;letter-spacing:.1em;font-size:15px;color:var(--gold);margin-bottom:2px}
+/* ── 时间轴:竖线 + 圆点标记,卡片只显示 缩略图 / 日期 / 标题 / 摘要,点击弹窗读全文 ── */
 .tl{position:relative;padding-left:32px}
-.tl:before{content:"";position:absolute;left:8px;top:14px;bottom:14px;width:2px;background:linear-gradient(var(--accent),var(--accent2),transparent);border-radius:2px}
-.ev{position:relative;border-radius:18px;padding:15px 46px 15px 18px;margin-bottom:14px;cursor:pointer;transition:transform .25s,box-shadow .25s}
-.ev:before{content:"";position:absolute;left:-30px;top:22px;width:12px;height:12px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 5px var(--line),0 0 14px var(--accent)}
-.ev time{display:inline-block;font-size:12px;color:#fff;background:linear-gradient(90deg,var(--accent),var(--accent2));padding:1px 12px;border-radius:20px;letter-spacing:.08em}
-.ev h3{margin:6px 0 0;font-size:17px;font-weight:600}
-.ev .ex{margin:5px 0 0;font-size:13px;color:var(--soft);line-height:1.7;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.ev:after{content:"›";position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:24px;line-height:1;color:var(--accent);opacity:.5;transition:transform .25s,opacity .25s}
-.ev:hover{transform:translateY(-3px);box-shadow:0 16px 32px rgba(224,80,126,.18)}
-.ev:hover:after{transform:translate(4px,-50%);opacity:1}
+.tl:before{content:"";position:absolute;left:8px;top:18px;bottom:18px;width:2px;border-radius:2px;
+  background:linear-gradient(var(--accent),var(--accent2) 62%,transparent)}
+.ev{position:relative;display:flex;align-items:flex-start;gap:14px;border-radius:18px;
+  padding:14px 16px;margin-bottom:14px;cursor:pointer;
+  transition:transform .3s cubic-bezier(.2,.8,.3,1),box-shadow .3s,border-color .3s}
+/* 圆点标记:对齐卡片首行日期,默认静止,hover / 聚焦时轻轻呼吸 */
+.ev:before{content:"";position:absolute;left:-30px;top:20px;width:12px;height:12px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 0 5px var(--line),0 0 14px var(--accent);
+  transition:transform .3s cubic-bezier(.2,.8,.3,1),box-shadow .3s}
+/* 首图缩略图位于卡片右侧,与正文垂直居中(横竖图统一裁为方角),多图时右下角挂数量角标 */
+.evpic{align-self:center;position:relative;flex:0 0 auto;width:58px;height:58px;border-radius:14px;overflow:hidden;
+  box-shadow:0 6px 16px rgba(224,80,126,.22)}
+.evpic img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s cubic-bezier(.2,.8,.3,1)}
+.ecnt{position:absolute;right:4px;bottom:4px;min-width:16px;height:16px;padding:0 4px;border-radius:8px;
+  background:rgba(30,8,18,.5);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+  color:#fff;font-style:normal;font-size:10.5px;font-weight:600;line-height:16px;text-align:center}
+.evbody{flex:1 1 auto;min-width:0}
+.evtop{display:flex;align-items:center;gap:8px}
+.ev time{display:inline-block;font-size:12px;color:#fff;background:linear-gradient(90deg,var(--accent),var(--accent2));
+  padding:1px 12px;border-radius:20px;letter-spacing:.08em;box-shadow:0 4px 12px rgba(224,80,126,.26)}
+.soon{font-size:11px;line-height:1.6;letter-spacing:.14em;color:var(--gold);
+  border:1px dashed color-mix(in srgb,var(--gold) 55%,transparent);border-radius:20px;padding:0 9px}
+.ev h3{margin:6px 0 0;font-size:16.5px;font-weight:600;line-height:1.45;letter-spacing:.02em}
+.ev .ex{margin:5px 0 0;font-size:13px;color:var(--soft);line-height:1.7;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.evgo{align-self:center;flex:0 0 auto;font-family:"Playfair Display",Georgia,serif;font-size:24px;line-height:1;
+  color:var(--accent);opacity:.4;transition:transform .3s cubic-bezier(.2,.8,.3,1),opacity .3s}
+.ev:hover,.ev:focus-visible{transform:translateY(-3px);box-shadow:0 18px 36px rgba(224,80,126,.2);
+  border-color:color-mix(in srgb,var(--accent) 32%,transparent)}
+.ev:hover .evgo,.ev:focus-visible .evgo{transform:translateX(5px);opacity:1}
+.ev:hover .evpic img,.ev:focus-visible .evpic img{transform:scale(1.07)}
+.ev:hover:before,.ev:focus-visible:before{transform:scale(1.15);box-shadow:0 0 0 6px var(--line),0 0 18px var(--accent)}
+.ev:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 /* 弹窗打开时隐藏时间轴卡片的箭头,避免从半透明遮罩里透出来干扰阅读
    (弹窗本体用 .memo,不再复用这里的 .ev,故本规则只影响卡片) */
-body.modal-on .tl .ev:after{opacity:0}
-.ev.future{border-style:dashed}.ev.future:before{background:var(--paper);box-shadow:0 0 0 2px var(--accent),0 0 0 6px var(--line)}
+body.modal-on .tl .evgo{opacity:0}
+.ev.future{border-style:dashed}
+.ev.future:before{background:var(--paper);box-shadow:0 0 0 2px var(--accent),0 0 0 6px var(--line)}
+/* 卡片错落浮现:由 .moments.show 触发,animation 只做入场,不占用 hover 的 transform */
+.moments.show .ev{animation:evIn .6s cubic-bezier(.2,.8,.3,1) backwards;animation-delay:var(--d,0ms)}
+@keyframes evIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+/* 窄屏:缩小右侧缩略图与间距,给正文留出更宽的阅读空间 */
+@media (max-width:400px){.ev{gap:11px;padding:13px}.evpic{width:48px;height:48px;border-radius:12px}}
 .env{text-align:center}
 /* 手绘信封:后板 + 露出的信纸 + V 形前袋 + 可翻开的顶盖;火漆封在盖尖。
    前袋与顶盖套了 envClip 裁剪(index.html),否则两者在 (12,82)/(288,82) 的直角端会戳出后板圆角,
@@ -94,13 +125,16 @@ body.modal-on .tl .ev:after{opacity:0}
 .envwrap:hover{filter:drop-shadow(0 26px 32px rgba(190,60,100,.32))}
 .envsvg{display:block;width:100%;height:auto}
 @keyframes envfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+/* 开信时序:火漆先完全裂开,盖子再翻——crack .4s + 两半 .42s 飞散 → 前盖 .48s 起折
+   → 回折盖 .72s 立起 → 信纸 1.06s 抽出(JS 的 openLetter 相应后移到 1960ms)。
+   旧版前盖 .05s 就折、火漆 .55s 才裂完,裂开的蜡会留在原盖尖位置和上移的盖尖脱节约 0.3s。 */
 .envsvg .esheet{will-change:transform,filter;transition:transform .45s cubic-bezier(.55,.1,.6,1),filter .45s}
-.envwrap.open .esheet{transform:translateY(-80px);filter:drop-shadow(0 10px 12px rgba(75,15,42,.3));transition:transform .85s cubic-bezier(.22,1.22,.32,1) .64s,filter .85s .64s}
+.envwrap.open .esheet{transform:translateY(-80px);filter:drop-shadow(0 10px 12px rgba(75,15,42,.3));transition:transform .85s cubic-bezier(.22,1.22,.32,1) 1.06s,filter .85s 1.06s}
 .envsvg .flap{transform-box:fill-box;transform-origin:50% 0;transition:transform .44s cubic-bezier(.3,.6,.4,1) .5s}
-.envwrap.open .flap{animation:flapopen .44s .05s forwards}
+.envwrap.open .flap{animation:flapopen .44s .48s forwards}
 @keyframes flapopen{0%{transform:scaleY(1);animation-timing-function:cubic-bezier(.32,0,.5,1)}58%{transform:scaleY(.22);animation-timing-function:cubic-bezier(.3,.6,.4,1)}100%{transform:scaleY(0)}}
 .envsvg .flapback{transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(0) rotate(0deg);transition:transform .3s cubic-bezier(.25,.7,.3,1) .36s}
-.envwrap.open .flapback{animation:flapBack .52s .3s cubic-bezier(.22,.9,.3,1) forwards}
+.envwrap.open .flapback{animation:flapBack .52s .72s cubic-bezier(.22,.9,.3,1) forwards}
 /* 背面翻起:底边必须一直贴着折线,所以只压 scaleY、不缩宽度(scaleX 会把底边从折缝上拉开)。
    过头 7.5% 再收 1.8% 落定,配 ±0.6° 摆动——纸片翻过折线后会晃一下才停,不会像拉伸出来。 */
 @keyframes flapBack{0%{transform:scaleY(.06) rotate(0deg)}58%{transform:scaleY(1.075) rotate(-.6deg)}78%{transform:scaleY(.982) rotate(.3deg)}100%{transform:scaleY(1) rotate(0deg)}}
@@ -115,7 +149,8 @@ body.modal-on .tl .ev:after{opacity:0}
 @keyframes flapclose{from{transform:scaleY(0)}to{transform:scaleY(1)}}
 /* 收合:先微微立起(预备)再落回折线后面,不然会像"啪"地凭空消失 */
 @keyframes flapbackclose{0%{transform:scaleY(1) rotate(0deg)}20%{transform:scaleY(1.06) rotate(.5deg)}100%{transform:scaleY(0) rotate(-.25deg)}}
-.sealpos{position:absolute;left:50%;top:65%;transform:translate(-50%,-50%);z-index:2;pointer-events:none}
+/* 印章中心精确落在盖尖(viewBox 中 (150,178)):178/274=64.9635%,不能用取整的 65%(会低 0.08px 从而与盖尖错开)。 */
+.sealpos{position:absolute;left:50%;top:calc(178 / 274 * 100%);transform:translate(-50%,-50%);z-index:2;pointer-events:none}
 #seal{position:relative;display:block;width:clamp(76px,25vw,96px);height:clamp(76px,25vw,96px);border:0;padding:0;background:none;font:inherit;cursor:pointer;pointer-events:auto;-webkit-tap-highlight-color:transparent;transition:transform .3s cubic-bezier(.2,.8,.3,1.4)}
 /* 火漆阴影:三层递进(贴纸接触影 → 中层 → 大范围环境影)。印章是象牙白蜡,
    影色用玫瑰褐而不是深红,否则会在白蜡边缘糊出一圈红色污渍;三层叠出"压在纸上"的体积。 */
@@ -129,7 +164,7 @@ body.modal-on .tl .ev:after{opacity:0}
 /* 按下:影收紧变实、整体压暗一点,读作被按进纸里 */
 #seal:active svg{filter:drop-shadow(0 .5px 1px rgba(92,32,52,.5)) drop-shadow(0 3px 5px rgba(98,40,60,.3)) brightness(.97)}
 #seal:focus-visible{outline:2px solid var(--accent);outline-offset:6px}
-#seal.break{animation:crack .55s cubic-bezier(.4,0,.8,1) forwards;pointer-events:none}
+#seal.break{animation:crack .4s cubic-bezier(.4,0,.8,1) forwards;pointer-events:none}
 #seal.break::after{animation:none;opacity:0}
 @keyframes crack{0%{transform:scale(1) rotate(0)}30%{transform:scale(1.16) rotate(5deg)}100%{transform:scale(1.04) rotate(-2deg)}}
 /* 掰开:复制成左右两半,沿锯齿线撕开、坠落淡出 */
@@ -138,8 +173,9 @@ body.modal-on .tl .ev:after{opacity:0}
 #seal .half.l{clip-path:polygon(0 0,50% 0,44% 16%,55% 33%,45% 51%,55% 68%,46% 85%,50% 100%,0 100%)}
 #seal .half.r{clip-path:polygon(50% 0,100% 0,100% 100%,50% 100%,46% 85%,55% 68%,45% 51%,55% 33%,44% 16%)}
 #seal.break>svg{visibility:hidden}
-#seal.break .half.l{animation:snapL .6s cubic-bezier(.5,0,.8,.4) forwards}
-#seal.break .half.r{animation:snapR .6s cubic-bezier(.5,0,.8,.4) forwards}
+/* 两半 .42s 飞散干净(前盖 .48s 才起折),所以蜡裂完才开始掀盖 */
+#seal.break .half.l{animation:snapL .42s cubic-bezier(.5,0,.8,.4) forwards}
+#seal.break .half.r{animation:snapR .42s cubic-bezier(.5,0,.8,.4) forwards}
 @keyframes snapL{0%{transform:translate(0,0) rotate(0);opacity:1}35%{transform:translate(-3px,2px) rotate(3deg);opacity:1}100%{transform:translate(-38px,34px) rotate(-34deg);opacity:0}}
 #seal.break .half svg{filter:none}
 @keyframes snapR{0%{transform:translate(0,0) rotate(0);opacity:1}35%{transform:translate(3px,2px) rotate(-3deg);opacity:1}100%{transform:translate(38px,36px) rotate(30deg);opacity:0}}

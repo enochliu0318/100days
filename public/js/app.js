@@ -151,7 +151,7 @@ function init(c,events,letter){
   M.onclick=e=>{if(e.target===M)closeModal()};
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&M.classList.contains('open'))closeModal()});
 
-  // 时间轴:卡片只显示日期+标题,点击弹窗阅读全文
+  // 时间轴:卡片只显示 缩略图 + 日期 + 标题 + 摘要,点击弹窗阅读全文
   // 正文里 "N. 小标题：正文" 与 "xx状态：… / 和你的状态：…" 挤在一整段最难读,
   // 这里只拆成块级元素做排版层次,文字本身一字不改
   const rich=s=>{
@@ -172,14 +172,30 @@ function init(c,events,letter){
     return `<p>${rich(s)}</p>`;
   }).join(''));
   $('tl').innerHTML=events.map((e,i)=>{
-    const d=parseDate(e.date),fut=d&&d>now0;
-    const ex=(e.text.split(/\n+/).find(l=>l.trim()&&!/^!\s*\[/.test(l.trim()))||'').trim();
-    return `<div class="ev glass${fut?' future':''}" data-i="${i}"><time>${d?fmt(d):esc(e.date)}</time><h3>${esc(e.title)}</h3>${ex?`<p class="ex">${esc(ex)}</p>`:''}</div>`;
+    const d=parseDate(e.date),fut=!!(d&&d>now0);
+    const lines=e.text.split(/\n+/).map(l=>l.trim()).filter(Boolean);
+    const pics=lines.filter(l=>/^!\[.*?\]\(.+?\)$/.test(l)).map(l=>l.replace(/^!\[.*?\]\((.+?)\)$/,'$1'));
+    const ex=lines.find(l=>!/^!\s*\[/.test(l))||'';
+    // 缩略图放在卡片右侧(正文之后、箭头之前),多图时右下角标数量;tabindex + --d 负责键盘可达与错落入场
+    return `<div class="ev glass${fut?' future':''}" data-i="${i}" tabindex="0" style="--d:${i*70}ms">`
+      +`<div class="evbody"><div class="evtop"><time>${d?fmt(d):esc(e.date)}</time>${fut?'<span class="soon">即将到来</span>':''}</div>`
+      +`<h3>${esc(e.title)}</h3>${ex?`<p class="ex">${esc(ex)}</p>`:''}</div>`
+      +`${pics.length?`<span class="evpic"><img src="${esc(pics[0])}" alt="${esc(e.title)}" loading="lazy">${pics.length>1?`<b class="ecnt">${pics.length}</b>`:''}</span>`:''}`
+      +`<span class="evgo" aria-hidden="true">›</span></div>`;
   }).join('');
+  const openEvent=i=>{
+    const d=parseDate(events[i].date);
+    openModal(`${d?`<time>${fmt(d)}</time>`:''}<h3>${esc(events[i].title)}</h3>${bodies[i]}`,'memo');
+  };
   $('tl').onclick=ev=>{
     const c=ev.target.closest('.ev');if(!c)return;
-    const i=+c.dataset.i,d=parseDate(events[i].date);
-    openModal(`${d?`<time>${fmt(d)}</time>`:''}<h3>${esc(events[i].title)}</h3>${bodies[i]}`,'memo');
+    openEvent(+c.dataset.i);
+  };
+  // 键盘可达:卡片 tabindex=0,回车 / 空格等同点击
+  $('tl').onkeydown=ev=>{
+    if(ev.key!=='Enter'&&ev.key!==' ')return;
+    const c=ev.target.closest('.ev');if(!c)return;
+    ev.preventDefault();openEvent(+c.dataset.i);
   };
 
   // 计数器
@@ -313,7 +329,9 @@ function init(c,events,letter){
     const r=S.getBoundingClientRect();
     burst(r.left+r.width/2,r.top+r.height/2);
     const E=$('envwrap').getBoundingClientRect();
-    setTimeout(()=>burst(E.left+E.width/2,E.top+E.height*.18),1000);
-    setTimeout(openLetter,1520);
+    // 时序与 style.css 对齐:火漆 .42s 裂完 → 前盖 .48s 起折(0.92s 翻到位)→ 信纸 1.06s 抽出(1.91s 到位)。
+    // 信封口那次 burst 压在盖子完全翻开之后,开信弹窗必须等信纸停稳(否则 FLIP 会从半空的位置起飞)。
+    setTimeout(()=>burst(E.left+E.width/2,E.top+E.height*.18),1440);
+    setTimeout(openLetter,1960);
   };
 }

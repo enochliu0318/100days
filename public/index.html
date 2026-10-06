@@ -7,7 +7,7 @@
 <title>纪念日</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E💗%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,500&family=Noto+Serif+SC:wght@300;400;600&family=Ma+Shan+Zheng&display=swap">
-<link rel="stylesheet" href="css/style.css?v=31">
+<link rel="stylesheet" href="css/style.css?v=34">
 </head>
 <body>
 <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
@@ -63,20 +63,25 @@
 <clipPath id="envClip"><rect x="11.25" y="79.25" width="277.5" height="177.5" rx="12.75"/></clipPath>
 </defs>
 <rect x="12" y="80" width="276" height="176" rx="12" fill="url(#peB)" stroke="#ecabc0" stroke-width="1.5"/>
-<!-- 翻开的盖子(背面):底边仍和折线同宽,两条斜边微微外鼓——纸折过之后不会还是直尺边 -->
+<!-- 翻开的盖子(背面):两条斜边微微外鼓——纸折过之后不会还是直尺边。
+     底边落在信封真正的折线上(后板顶边 y=80),两个底角收进后板圆角的切点(x24 / x276)。
+     旧版底边按前袋上缘(y=82)拉满 12..288,尖端会戳出信封的圆肩,翻开后像一块和主体脱节的三角片。 -->
 <g class="flapback">
-<path d="M12 82 Q81 37 150 6 Q219 37 288 82 Z" fill="url(#peR)" stroke="#dd8ca8" stroke-width="1.2" stroke-linejoin="round"/>
-<path d="M12 82 Q81 37 150 6 Q219 37 288 82 Z" fill="url(#peT)"/>
-<!-- 与正面缝线对称的针脚:同一根线从另一面看过来 -->
-<path d="M28 72 Q89 37 150 16 Q211 37 272 72" fill="none" stroke="#fdeaf1" stroke-opacity=".5" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="1 8"/>
+<path d="M24 80 Q81 37 150 6 Q219 37 276 80 Z" fill="url(#peR)" stroke="#dd8ca8" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M24 80 Q81 37 150 6 Q219 37 276 80 Z" fill="url(#peT)"/>
+<!-- 与正面缝线对称的针脚:同一根线从另一面看过来(底边收窄后线头同步内移,免得探出盖沿) -->
+<path d="M40 70 Q89 37 150 16 Q211 37 260 70" fill="none" stroke="#fdeaf1" stroke-opacity=".5" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="1 8"/>
 <!-- 正面那颗心压到背面的凹痕(上下翻转,心尖朝上) -->
 <path d="M150 113c-4.2-4.6-9.4-7.8-9.4-12.1 0-3.5 2.9-6 6-6 1.9 0 3.2 1.3 3.6 2.5.4-1.2 1.7-2.5 3.6-2.5 3.1 0 6 2.5 6 6 0 4.3-5.2 7.5-9.4 12.1z" fill="#b8678f" opacity=".28" transform="translate(0,164) scale(1,-1)"/>
 </g>
 <g class="esheet">
-<rect x="42" y="90" width="216" height="166" rx="8" fill="url(#peS)" stroke="#2f0e20" stroke-opacity=".65" stroke-width="1.2"/>
+<!-- 信纸底边从 256 收到 254(高度 166→164):底边原先和信封底边(y=256)严丝合缝,
+     前袋底边的抗锯齿只盖住它一部分,深色纸边就从信封最下沿渗出细细一条。
+     抬 2 单位后信纸完全落在前袋填充之内,底边不再和口袋边共线。 -->
+<rect x="42" y="90" width="216" height="164" rx="8" fill="url(#peS)" stroke="#2f0e20" stroke-opacity=".65" stroke-width="1.2"/>
 <rect x="48" y="96" width="204" height="154" rx="6" fill="none" stroke="#d9a06a" stroke-opacity=".45"/>
 <g stroke="#e0ac7f" stroke-width="2.6" stroke-linecap="round" opacity=".42">
-<line x1="66" y1="128" x2="236" y2="128"/><line x1="66" y1="150" x2="236" y2="150"/><line x1="66" y1="172" x2="236" y2="172"/><line x1="66" y1="194" x2="198" y2="194"/><line x1="66" y1="216" x2="236" y2="216"/>
+<line x1="66" y1="128" x2="234" y2="128"/><line x1="66" y1="150" x2="234" y2="150"/><line x1="66" y1="172" x2="234" y2="172"/><line x1="66" y1="194" x2="198" y2="194"/><line x1="66" y1="216" x2="234" y2="216"/>
 </g>
 <path d="M150 243c-4.6-5.1-10.4-8.7-10.4-13.4 0-3.8 3.2-6.5 6.5-6.5 2.1 0 3.5 1.4 3.9 2.7.4-1.3 1.8-2.7 3.9-2.7 3.3 0 6.5 2.7 6.5 6.5 0 4.7-5.8 8.3-10.4 13.4z" fill="#f097b5" opacity=".92"/>
 </g>
@@ -86,7 +91,10 @@
 <path d="M12 82 L150 178 L288 82 L288 244 C288 250.6 282.5 256 276 256 L24 256 C17.5 256 12 250.6 12 244 Z" fill="url(#peF)" stroke="#ecabc0" stroke-width="1.5"/>
 <path d="M12 82 L150 178 L288 82" fill="none" stroke="#c9768f" stroke-opacity=".5" stroke-width="3" transform="translate(0,3)"/>
 <path d="M12 82 L150 178 L288 82" fill="none" stroke="#e18fa9" stroke-opacity=".65" stroke-width="1.5"/>
-<g class="flap"><path d="M12 82 L288 82 L150 178 Z" fill="url(#peG)" stroke="#e18fa9" stroke-width="1.5" stroke-linejoin="round"/><path d="M28 92 L150 169 L272 92" fill="none" stroke="#fdeaf1" stroke-opacity=".5" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="1 8"/><path d="M150 113c-4.2-4.6-9.4-7.8-9.4-12.1 0-3.5 2.9-6 6-6 1.9 0 3.2 1.3 3.6 2.5.4-1.2 1.7-2.5 3.6-2.5 3.1 0 6 2.5 6 6 0 4.3-5.2 7.5-9.4 12.1z" fill="#c28a5b" opacity=".5"/></g>
+<!-- 顶盖只描 V 形两条折边,上缘(y=82)不描边:上缘线与后板顶边(y=80)只差 2 单位,
+     两条 1.5 描边叠在一起会形成一条"双层粗边",与其余三边(单条 1.5)不一致。
+     上缘改由后板顶描边 + 折缝暗部(peU)交代,厚度与三边齐平。 -->
+<g class="flap"><path d="M12 82 L288 82 L150 178 Z" fill="url(#peG)"/><path d="M12 82 L150 178 L288 82" fill="none" stroke="#e18fa9" stroke-width="1.5" stroke-linejoin="round"/><path d="M28 92 L150 169 L272 92" fill="none" stroke="#fdeaf1" stroke-opacity=".5" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="1 8"/><path d="M150 113c-4.2-4.6-9.4-7.8-9.4-12.1 0-3.5 2.9-6 6-6 1.9 0 3.2 1.3 3.6 2.5.4-1.2 1.7-2.5 3.6-2.5 3.1 0 6 2.5 6 6 0 4.3-5.2 7.5-9.4 12.1z" fill="#c28a5b" opacity=".5"/></g>
 </g>
 </svg>
 <div class="sealpos"><button id="seal" aria-label="拆开火漆封印,阅读这封信"><svg viewBox="0 0 200 200" aria-hidden="true">
@@ -141,6 +149,6 @@
 <footer class="en">Tap anywhere · make a wish ♥<br><span id="ft"></span></footer>
 </main>
 <div class="modal" id="modal"><div class="mwrap"><button class="mx" id="mx" aria-label="关闭">×</button><div class="mbox" id="mbox"><div class="mbody" id="mbody"></div></div><div class="mfoot" id="mfoot"><button class="rb" id="rb">再读一遍</button></div></div></div>
-<script type="module" src="js/app.js?v=27"></script>
+<script type="module" src="js/app.js?v=29"></script>
 </body>
 </html>
