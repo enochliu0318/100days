@@ -97,7 +97,8 @@ function init(c,events,letter){
       setTimeout(restoreSeal,1400);
     }
     MB.innerHTML=html;
-    M.classList.remove('memo','letter');if(cls)M.classList.add(cls);
+    // 每次开窗都要把上一种弹窗的皮肤类清干净:漏掉任何一个都会让后开的弹窗继承前一种的规则
+    M.classList.remove('memo','letter','artzoom');if(cls)M.classList.add(cls);
     BOX.className='mbox'+(cls==='letter'?' paper':'');
     M.classList.add('open');document.body.style.overflow='hidden';document.body.classList.add('modal-on');BOX.scrollTop=0;
   }
@@ -198,6 +199,23 @@ function init(c,events,letter){
     ev.preventDefault();openEvent(+c.dataset.i);
   };
 
+  // 一百天纪念画:走专门的灯箱(.artzoom),不复用时间轴那个 .memo 阅读面板——
+  // .memo 是一张 520px 宽的纸卡(标题 + 纸底 + 78vh 高度上限 + 内部滚动),竖幅原画塞进去
+  // 只能缩到栏宽再上下滚,细节全丢。灯箱里不放标题、不加纸底,<img> 同时受 max-width 与
+  // max-height 约束,交给 CSS 按 1364×1766 的固有比例取"放得下的最大尺寸"。
+  const ART='assets/photos/100天.jpg',artEl=$('art');
+  if(artEl){
+    const artZoom=()=>{
+      openModal(`<figure class="zoomfig"><img class="zoomimg" src="${ART}" width="1364" height="1766"`
+        +` alt="宝宝画的一百天纪念画:蓝色小海豚与白色小白鲸">`
+        +`<figcaption class="zoomcap">小海豚 ❤️ 小白鲸</figcaption></figure>`,'artzoom');
+      const im=MB.querySelector('.zoomimg');
+      if(im)im.onclick=closeModal; // 再点一下画本身也收起,与点背景同一手感
+    };
+    artEl.onclick=artZoom;
+    artEl.onkeydown=ev=>{if(ev.key!=='Enter'&&ev.key!==' ')return;ev.preventDefault();artZoom()};
+  }
+
   // 计数器
   function tick(){
     const now=new Date(),diff=Math.max(now-START,0),day=Math.floor(diff/864e5),n=day+1;
@@ -254,7 +272,7 @@ function init(c,events,letter){
     MAIN.classList.remove('pending');
     const [W,H]=size();
     burst(W/2,H*.4);setTimeout(()=>burst(W*.3,H*.3),320);setTimeout(()=>burst(W*.7,H*.32),640);
-    const secs=[...document.querySelectorAll('.env,.moments')];
+    const secs=[...document.querySelectorAll('.env,.artwork,.moments')];
     secs.forEach((s,i)=>{s.style.transition='none';s.classList.remove('show');
       setTimeout(()=>{s.style.transition='';requestAnimationFrame(()=>s.classList.add('show'))},260+i*220)});
     $('cd').textContent=`🎉 第 ${N} 天，全部内容已解锁`;

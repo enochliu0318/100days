@@ -23,7 +23,7 @@ canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index
 @keyframes fade{from{opacity:.3}to{opacity:1}}
 main{position:relative;z-index:2;max-width:520px;margin:0 auto;padding:44px 20px 80px}
 /* ── 未满 milestone 天:站点常开,但只显示计数;信件与时间轴整段收起 ── */
-main.pending .env,main.pending .moments{display:none}
+main.pending .env,main.pending .artwork,main.pending .moments{display:none}
 .pnote{display:none;margin:30px auto 0;max-width:400px;text-align:center;font-size:13.5px;line-height:2.1;color:var(--soft);letter-spacing:.05em}
 main.pending .pnote{display:block;animation:fade 2.6s ease-in-out infinite alternate}
 .pnote .pk{display:block;font-size:20px;margin-bottom:10px;opacity:.75;animation:beat 2.4s infinite}
@@ -290,3 +290,51 @@ footer{text-align:center;color:var(--soft);font-size:13px;letter-spacing:.12em;l
 #lock.shake .lcard{animation:shake .55s}
 @keyframes shake{0%,100%{transform:none}15%{transform:translateX(-10px)}35%{transform:translateX(9px)}55%{transform:translateX(-6px)}75%{transform:translateX(4px)}}
 @media (max-width:340px){.lkeys{grid-template-columns:repeat(3,56px);gap:10px}.lkeys button{width:56px;height:56px}}
+/* ── 一百天纪念画:宝宝手绘的小海豚 & 小白鲸。
+   画面里已经写好了字(100 Days / Enoch & Sissi / 那句英文),
+   所以装裱只做一层素雅的卡纸 + 两角和纸胶带(与 .paper:before 同一套色),
+   不再加标题字去和画里的字抢视线;整幅轻轻浮动,点击可在弹窗里放大看细节。 ── */
+.artwork{text-align:center}
+.artframe{position:relative;display:inline-block;margin:0;padding:13px;border-radius:6px;
+  background:linear-gradient(168deg,#fffdfb,#f6eaee);cursor:zoom-in;
+  box-shadow:0 20px 44px rgba(120,40,70,.2),0 5px 14px rgba(120,40,70,.12);
+  transition:box-shadow .45s;animation:artfloat 6.4s ease-in-out infinite}
+/* 浮动动画只压 transform,把 hover 的反馈交给 box-shadow / 内图缩放,两者互不打断 */
+@keyframes artfloat{0%,100%{transform:rotate(-1.4deg) translateY(0)}50%{transform:rotate(-1.4deg) translateY(-7px)}}
+.artframe:hover{box-shadow:0 28px 56px rgba(120,40,70,.27),0 8px 20px rgba(120,40,70,.17)}
+.artframe:focus-visible{outline:2px solid var(--accent);outline-offset:8px}
+/* 竖幅原画 1364×1766:宽度收敛到 300px(窄屏按视口收),高度由 aspect-ratio 自动带出 */
+.artimg{display:block;width:min(300px,70vw);height:auto;border-radius:3px;
+  box-shadow:0 0 0 1px var(--line) inset;transition:transform .5s cubic-bezier(.2,.8,.3,1)}
+.artframe:hover .artimg{transform:scale(1.025)}
+/* 和纸胶带:压在画框两上角,微微透出底下的卡纸 */
+.tape{position:absolute;top:-12px;width:76px;height:25px;border-radius:2px;
+  background:linear-gradient(rgba(255,170,195,.72),rgba(255,170,195,.5));
+  box-shadow:0 3px 7px rgba(120,40,70,.14);pointer-events:none}
+.tape.t1{left:-16px;transform:rotate(-34deg)}
+.tape.t2{right:-16px;transform:rotate(34deg)}
+/* 画的名字已经提到这一节的 <h2> 里,画框下面只留那句题词,所以间距直接给在 .artquote 上 */
+.artquote{margin:20px 0 0;font-size:14.5px;letter-spacing:.03em;color:var(--soft)}
+.arthint{margin:14px 0 0;font-size:12px;letter-spacing:.2em;color:var(--soft);opacity:.75}
+/* ── 画的放大灯箱(.modal.artzoom):和上面时间轴的 .memo 阅读面板刻意划清界限。
+   .memo 是"一张 520px 宽的纸卡":有标题、纸底、max-height:min(78vh,660px) 与内部滚动 ——
+   竖幅原画进去只能缩到栏宽再上下滚。灯箱则去掉标题/纸底/内边距/高度上限,只留一个
+   <img>,同时给 max-width 与 max-height 两道约束:按 CSS 的约束求解,浏览器会用
+   1364×1766 的固有比例算出"能放下的最大尺寸"——窗口越高画越大,比例永远是原画比例,
+   既不裁切也不会像纸卡那样把底部挤进滚动条。顶部 58px 留作关闭键的专属通道。 ── */
+.modal.artzoom{padding:58px 16px 18px;background:rgba(24,6,15,.84);z-index:96}
+.modal.artzoom .mwrap{max-width:94vw}
+.modal.artzoom .mbox{max-height:none;overflow:visible;background:none;border:none;box-shadow:none;
+  border-radius:0;backdrop-filter:none;-webkit-backdrop-filter:none}
+.modal.artzoom .mbody{padding:0}
+.zoomfig{margin:0;display:flex;flex-direction:column;align-items:center;gap:14px}
+.zoomimg{display:block;width:auto;height:auto;max-width:100%;border-radius:8px;cursor:zoom-out;
+  max-height:calc(100vh - 118px);max-height:calc(100dvh - 118px);
+  box-shadow:0 0 0 1px rgba(255,255,255,.24),0 30px 64px rgba(10,2,6,.55)}
+.zoomcap{margin:0;font-family:"Ma Shan Zheng","STKaiti","KaiTi","Noto Serif SC",serif;
+  font-size:16px;letter-spacing:.16em;color:rgba(255,236,243,.85);text-shadow:0 2px 12px rgba(0,0,0,.45)}
+/* 关闭键钉在视口右上角:图片会把 .mwrap 撑得很高,挂在框角(默认 .mx 的 top:-13px)
+   会被顶出屏幕;钉住视口则始终可点。 */
+.modal.artzoom .mx{position:fixed;top:calc(env(safe-area-inset-top,0px) + 16px);right:16px;
+  width:42px;height:42px;border-color:rgba(255,255,255,.34);background:rgba(40,12,24,.55);color:#ffe9f1}
+.modal.artzoom .mx:hover{color:#fff;background:rgba(224,80,126,.72)}
