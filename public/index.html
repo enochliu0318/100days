@@ -7,7 +7,7 @@
 <title>纪念日</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E💗%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,500&family=Noto+Serif+SC:wght@300;400;600&family=Ma+Shan+Zheng&display=swap">
-<link rel="stylesheet" href="css/style.css?v=37">
+<link rel="stylesheet" href="css/style.css?v=42">
 </head>
 <body>
 <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
@@ -16,6 +16,22 @@
 <div id="intro"><div class="hb"><i></i><i></i><i></i><div class="heart">♥</div></div><h1 class="en" id="ih"></h1><small id="is"></small><p id="ip">轻触屏幕 · 开启属于 Enoch 和 Sissi 的故事</p></div>
 <div id="mus"><button id="mb" class="glass" title="音乐" aria-label="播放或暂停背景音乐"><svg viewBox="0 0 50 48" aria-hidden="true"><defs><radialGradient id="vg" cx="36%" cy="30%" r="78%"><stop offset="0" stop-color="#54444e"/><stop offset=".5" stop-color="#241a21"/><stop offset="1" stop-color="#0d080b"/></radialGradient><linearGradient id="vsh" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".48" stop-color="#fff" stop-opacity="0"/></linearGradient><linearGradient id="vlab" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--accent2)"/><stop offset="1" stop-color="var(--accent)"/></linearGradient></defs><g class="spin"><circle cx="23" cy="24" r="20.5" fill="url(#vg)"/><g fill="none" stroke="#fff" stroke-opacity=".08" stroke-width=".8"><circle cx="23" cy="24" r="18.2"/><circle cx="23" cy="24" r="15.9"/><circle cx="23" cy="24" r="13.6"/><circle cx="23" cy="24" r="11.4"/></g><circle cx="23" cy="24" r="20.5" fill="url(#vsh)"/><circle cx="23" cy="24" r="8.4" fill="url(#vlab)"/><circle cx="23" cy="24" r="8.4" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width=".7"/></g><g class="arm"><path d="M44 12.4 L34.6 18.6" stroke="var(--accent)" stroke-width="1.9" stroke-linecap="round"/><circle cx="33.9" cy="19.3" r="2.1" fill="var(--accent)"/><circle cx="45" cy="11" r="2.4" fill="var(--accent)"/></g><circle cx="23" cy="24" r="1.4" fill="#2a1a22"/><path class="iPlay" d="M21.2 20.4v7.2l5.7-3.6z" fill="#fff" fill-opacity=".95"/><g class="iPause" fill="#fff" fill-opacity=".95"><rect x="20.3" y="20.6" width="2.1" height="6.8" rx=".9"/><rect x="23.8" y="20.6" width="2.1" height="6.8" rx=".9"/></g></svg></button><button id="lb" class="glass" title="再次锁定" aria-label="再次锁定"><svg viewBox="0 0 24 26" aria-hidden="true"><defs><linearGradient id="lbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--accent2)"/><stop offset="1" stop-color="var(--accent)"/></linearGradient></defs><path class="lsh" d="M7.4 11V7.6a4.6 4.6 0 0 1 9.2 0V11" fill="none" stroke="var(--accent)" stroke-width="2.1" stroke-linecap="round"/><rect class="lbk" x="4.3" y="10.4" width="15.4" height="12.6" rx="3.4" fill="url(#lbg)"/><rect class="lbk" x="4.3" y="10.4" width="15.4" height="12.6" rx="3.4" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width=".9"/><circle class="lhy" cx="12" cy="15.6" r="1.75" fill="#fff" fill-opacity=".95"/><path class="lhy" d="M12 16.6v3" stroke="#fff" stroke-opacity=".95" stroke-width="1.7" stroke-linecap="round"/></svg></button></div>
 <main>
+<nav class="tabs" id="tabs" role="tablist">
+<span class="thumb" id="thumb" aria-hidden="true"></span>
+<a href="#/timeline" data-v="timeline">时间轴</a>
+<a href="#/" data-v="home">主页</a>
+<a href="#/milestones" data-v="milestones">纪念日</a>
+</nav>
+
+<!-- 三个视图,一次只显示一个(见 app.js 的 route);液态玻璃导航条常驻在上面 -->
+
+<!-- 时间轴 -->
+<div class="view" id="v-timeline">
+<section class="moments"><h2><small>Our Moments</small>回忆时间轴</h2><div class="tl" id="tl"></div></section>
+</div>
+
+<!-- 主页:计数 / 倒计时;纪念日前后 showcase 里会浮出那一站的内容包 -->
+<div class="view" id="v-home">
 <section class="hero">
 <p class="eyebrow">Our Story</p>
 <h1 class="names en" id="names"></h1>
@@ -43,7 +59,7 @@
   <p class="thint" id="thint">先陪宝宝把日子数完 ♥</p>
 </div>
 </section>
-<section class="env"><h2><small>A Letter For You</small><span id="lt"></span></h2>
+<template id="tpl-env"><section class="env"><h2><small>A Letter For You</small><span id="lt"></span></h2>
 <div class="envwrap" id="envwrap">
 <svg class="envsvg" viewBox="0 0 300 274" aria-hidden="true">
 <defs>
@@ -143,21 +159,24 @@
 </svg></button></div>
 </div>
 <p class="hint" id="hint">轻触封蜡,拆开这封信</p>
-</section>
+</section></template>
 
-<section class="artwork"><h2><small>Hand-painted</small>小海豚 ❤️ 小白鲸</h2>
-<figure class="artframe" id="art" role="button" tabindex="0" aria-label="放大看看小海豚和小白鲸">
-<span class="tape t1" aria-hidden="true"></span><span class="tape t2" aria-hidden="true"></span>
-<img class="artimg" src="assets/photos/100天.jpg" alt="宝宝画的一百天纪念画:蓝色小海豚与白色小白鲸,写着 100 Days、Enoch &amp; Sissi Happy 100 days anniversary" width="1364" height="1766" loading="lazy">
-</figure>
-<p class="artquote en">“You are the rhyme, you are my reason”</p>
-<p class="arthint">轻触放大</p>
-</section>
+<div class="showcase" id="showcase"></div>
 
-<section class="moments"><h2><small>Our Moments</small>回忆时间轴</h2><div class="tl" id="tl"></div></section>
+<!-- 下一封信:下一个里程碑的倒计时,没到预告期不出现(见 app.js mountNextLetter) -->
+<section class="nextletter" id="nl"><h2><small>The Next Letter</small>下一封信</h2><div class="nlcard" id="nlcard"></div></section>
+</div>
+
+<!-- 纪念日页:每一站一张卡,点开就是那一站的内容包(见 app.js mountMilestones) -->
+<div class="view" id="v-milestones">
+<section class="archive" id="ar"><h2><small>Milestones</small>纪念日</h2><div class="arlist" id="arlist"></div></section>
+<div class="msdetail" id="msdetail"></div>
+<button class="msclose" id="msclose" type="button">收起 ↑</button>
+</div>
+
 <footer class="en">Tap anywhere · make a wish ♥<br><span id="ft"></span></footer>
 </main>
 <div class="modal" id="modal"><div class="mwrap"><button class="mx" id="mx" aria-label="关闭">×</button><div class="mbox" id="mbox"><div class="mbody" id="mbody"></div></div><div class="mfoot" id="mfoot"><button class="rb" id="rb">再读一遍</button></div></div></div>
-<script type="module" src="js/app.js?v=32"></script>
+<script type="module" src="js/app.js?v=39"></script>
 </body>
 </html>
