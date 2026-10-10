@@ -450,12 +450,66 @@ function init(c,events,mss,nextDay){
   const VIEWS={home:$('v-home'),timeline:$('v-timeline'),milestones:$('v-milestones')};
 
   // 导航里那块玻璃滑块:量出当前标签的位置,把玻璃移过去(宽度也一起过渡)
+  const tabsEl=$('tabs'),thumbEl=$('thumb');
   function moveThumb(){
-    const tabs=$('tabs'),th=$('thumb');if(!tabs||!th)return;
-    const a=tabs.querySelector('a.on');
-    if(!a){th.style.width='0';return}
-    th.style.width=a.offsetWidth+'px';
-    th.style.transform=`translateX(${a.offsetLeft}px)`;
+    if(!tabsEl||!thumbEl)return;
+    const a=tabsEl.querySelector('a.on');
+    if(!a){thumbEl.style.width='0';return}
+    thumbEl.style.transition='';
+    thumbEl.style.width=a.offsetWidth+'px';
+    thumbEl.style.transform=`translateX(${a.offsetLeft}px)`;
+  }
+
+  // ── 玻璃滑块本身可以拖:手指按在导航条上左右拖,玻璃跟着走、颜色跟即切换,
+  //    松手吸附到最近的那个标签并换页。页面不动,只动这块玻璃。 ──
+  if(tabsEl&&thumbEl){
+    const links=[...tabsEl.querySelectorAll('a')];
+    const cx=a=>a.offsetLeft+a.offsetWidth/2;
+    const onI=()=>Math.max(0,links.findIndex(a=>a.classList.contains('on')));
+    let d=null,suppress=false,suppressT=null;
+    const snap=i=>{thumbEl.style.width=links[i].offsetWidth+'px';thumbEl.style.transform=`translateX(${links[i].offsetLeft}px)`};
+    const nearest=x=>{let b=0,bd=1e9;links.forEach((a,i)=>{const v=Math.abs(x-cx(a));if(v<bd){bd=v;b=i}});return b};
+    tabsEl.addEventListener('pointerdown',e=>{
+      if(!links.length)return;
+      if(e.pointerType==='mouse'&&e.button!==0)return;
+      d={x:e.clientX,i:onI(),at:onI(),moved:0,cap:false};
+      thumbEl.style.transition='none';
+    });
+    tabsEl.addEventListener('pointermove',e=>{
+      if(!d)return;
+      const dx=e.clientX-d.x;d.moved=dx;
+      if(!d.cap){
+        if(Math.abs(dx)<4)return;
+        d.cap=true;tabsEl.classList.add('dragging');
+        try{tabsEl.setPointerCapture(e.pointerId)}catch(err){}
+      }
+      const last=links[links.length-1];
+      const x=Math.max(cx(links[0]),Math.min(cx(last),cx(links[d.i])+dx));
+      const t=nearest(x),w=links[t].offsetWidth;
+      const maxL=last.offsetLeft+last.offsetWidth-w;
+      const left=Math.max(links[0].offsetLeft,Math.min(maxL,x-w/2));
+      thumbEl.style.width=w+'px';thumbEl.style.transform=`translateX(${left}px)`;
+      d.at=t;
+      links.forEach((a,k)=>a.classList.toggle('on',k===t));
+    });
+    const drop=()=>{
+      if(!d)return;const g=d;d=null;
+      tabsEl.classList.remove('dragging');
+      thumbEl.style.transition='';                 // 恢复过渡,吸附才有动画
+      const i=Math.abs(g.moved)>4?g.at:g.i;
+      snap(i);
+      if(Math.abs(g.moved)>4){
+        suppress=true;clearTimeout(suppressT);suppressT=setTimeout(()=>{suppress=false;suppressT=null},250);
+        location.hash=links[i].getAttribute('href');
+      }else links.forEach((a,k)=>a.classList.toggle('on',k===i));
+    };
+    tabsEl.addEventListener('pointerup',drop);
+    tabsEl.addEventListener('pointercancel',drop);
+    // 拖完之后浏览器还会按"松手位置那个链接"再跳一次,拦掉它
+    tabsEl.addEventListener('click',e=>{
+      if(!suppress)return;
+      suppress=false;e.stopPropagation();e.preventDefault();
+    },true);
   }
 
   function route(){

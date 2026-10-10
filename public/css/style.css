@@ -400,15 +400,20 @@ body.modal-on .arlist .argo{opacity:0}
 /* ── 顶部导航:iOS 液态玻璃分段控件。玻璃滑块在三个标签下滑动,里面还有一道丝带高光
       来回扫 —— 玻璃的"液态"感就来自那道光。颜色全用现有变量,深浅色模式自动跟着走。 ── */
 .tabs{position:relative;display:flex;justify-content:center;gap:2px;width:max-content;max-width:100%;
-  margin:0 auto 30px;padding:5px;border-radius:999px;
+  margin:0 auto 30px;padding:5px;border-radius:999px;cursor:grab;
+  touch-action:pan-y;-webkit-user-select:none;user-select:none;
   background:linear-gradient(180deg,color-mix(in srgb,var(--sheet) 64%,transparent),color-mix(in srgb,var(--sheet) 38%,transparent));
   border:1px solid color-mix(in srgb,var(--bd) 80%,transparent);
   backdrop-filter:blur(22px) saturate(180%);-webkit-backdrop-filter:blur(22px) saturate(180%);
   box-shadow:0 10px 30px rgba(120,40,70,.16),inset 0 1px 0 color-mix(in srgb,var(--sheet) 65%,transparent),
     inset 0 -1px 0 color-mix(in srgb,var(--ink) 6%,transparent)}
+.tabs.dragging{cursor:grabbing}
 .tabs a{position:relative;z-index:1;font-size:13px;letter-spacing:.14em;color:var(--soft);text-decoration:none;
   padding:8px 20px;border-radius:999px;white-space:nowrap;-webkit-tap-highlight-color:transparent;
+  -webkit-user-drag:none;user-select:none;
   transition:color .38s cubic-bezier(.3,.8,.3,1)}
+/* 拖玻璃滑块时:颜色跟随即时切换,别拖泥带水 */
+.tabs.dragging a{transition:none}
 .tabs a:hover{color:var(--accent)}
 .tabs a.on{color:var(--ink)}
 .tabs .thumb{position:absolute;z-index:0;top:5px;bottom:5px;left:0;width:0;border-radius:999px;overflow:hidden;
@@ -420,6 +425,12 @@ body.modal-on .arlist .argo{opacity:0}
   background:linear-gradient(105deg,transparent 38%,color-mix(in srgb,var(--sheet) 85%,transparent) 50%,transparent 62%);
   animation:sheen 5s ease-in-out infinite}
 @keyframes sheen{0%,100%{transform:translateX(-135%)}55%{transform:translateX(135%)}}
+/* 窄屏:右上角浮着「音乐 / 锁定」两个圆钮(高 44,上边距 12),导航条要在它们下面,
+   否则手机上会叠在一起。顺带把标签收窄一点,免得挤到边。 */
+@media (max-width:560px){
+  main{padding-top:66px}
+  .tabs a{padding:8px 15px;font-size:12.5px}
+}
 /* ── 三个视图:一次只显示一个,切换时轻轻浮上来 ── */
 .view{display:none}
 .view.active{display:block;animation:viewIn .5s cubic-bezier(.2,.8,.3,1)}
