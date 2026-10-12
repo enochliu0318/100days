@@ -11,6 +11,7 @@
 └─ public/                  ← 部署目录(Cloudflare 只发布这里)
    ├─ index.html            页面骨架
    ├─ manifest.webmanifest  Web App 配置
+   ├─ apple-touch-icon-v3.png iPhone 主屏幕图标
    ├─ css/style.css         样式(粉金主题,支持深色模式)
    ├─ js/
    │  ├─ app.js             主逻辑:密码锁、读取内容、计数器、三个视图、内容包渲染、情书弹窗
@@ -27,9 +28,8 @@
    │     └─ 365.md          第 365 天(占位草稿,见下)
    └─ assets/
       ├─ icon.svg           Enoch & Sissi 图标源文件
-      ├─ icon-180.png       iPhone 主屏幕图标
-      ├─ icon-192.png       PWA 图标
-      ├─ icon-512.png       PWA / maskable 图标
+      ├─ icon-192-v3.png    PWA 图标
+      ├─ icon-512-v3.png    PWA / maskable 图标
       ├─ music.mp3          背景音乐(自行放入,文件名与 site.md 中 music 一致)
       └─ photos/            时间轴照片
 ```
@@ -127,8 +127,8 @@ python3 -m http.server -d public 8000
 ## 添加到 iPhone 主屏幕
 
 用 Safari 打开已部署的网站,点「分享」→「添加到主屏幕」即可。主屏幕会使用
-`assets/icon-180.png`;需要改图标时,先编辑 `assets/icon.svg`,再重新生成 180、192、512
-像素的 PNG,并保留对应文件名。部署需要 HTTPS。
+`apple-touch-icon-v3.png`;图标采用独立的根目录 PNG,避免 iPhone 忽略 SVG favicon 或回退显示网站首字母。
+部署需要 HTTPS。更换图标后应更新 PNG 文件名和页面引用,并删除旧主屏幕图标后重新添加。
 
 ## 部署到 Cloudflare Pages
 
