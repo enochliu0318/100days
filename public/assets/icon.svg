@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="background" x1="120" y1="80" x2="910" y2="950" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#a64c6b"/>
+      <stop offset=".52" stop-color="#853652"/>
+      <stop offset="1" stop-color="#65263f"/>
+    </linearGradient>
+    <radialGradient id="light" cx="0" cy="0" r="1" gradientTransform="matrix(0 660 -660 0 512 270)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f4c4cf" stop-opacity=".2"/>
+      <stop offset="1" stop-color="#f4c4cf" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="ink" x1="300" y1="350" x2="730" y2="670" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff9f0"/>
+      <stop offset="1" stop-color="#f2d8c4"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#background)" d="M0 0h1024v1024H0z"/>
+  <path fill="url(#light)" d="M0 0h1024v1024H0z"/>
+  <circle cx="512" cy="512" r="391" fill="none" stroke="#f1d4b9" stroke-opacity=".7" stroke-width="3"/>
+  <circle cx="512" cy="512" r="378" fill="none" stroke="#fff" stroke-opacity=".12" stroke-width="2"/>
+  <text x="512" y="566" fill="url(#ink)" font-family="Baskerville, 'Palatino Linotype', 'Book Antiqua', Georgia, serif" font-size="210" font-style="italic" font-weight="400" letter-spacing="-13" text-anchor="middle">E&amp;S</text>
+  <path d="M414 632h196" stroke="#e8bf9e" stroke-linecap="round" stroke-opacity=".85" stroke-width="3"/>
+  <path d="M512 650c-8-7-21-15-21-25a12 12 0 0 1 21-8 12 12 0 0 1 21 8c0 10-13 18-21 25Z" fill="#f1d4b9"/>
+  <text x="512" y="718" fill="#f8e9e1" fill-opacity=".82" font-family="Georgia, serif" font-size="29" letter-spacing="9" text-anchor="middle">ENOCH · SISSI</text>
+</svg>
