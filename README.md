@@ -11,6 +11,8 @@
 └─ public/                  ← 部署目录(Cloudflare 只发布这里)
    ├─ index.html            页面骨架
    ├─ manifest.webmanifest  Web App 配置
+   ├─ apple-touch-icon-152.png iPad 主屏幕图标
+   ├─ apple-touch-icon-167.png iPad Pro 主屏幕图标
    ├─ apple-touch-icon-v3.png iPhone 主屏幕图标
    ├─ css/style.css         样式(粉金主题,支持深色模式)
    ├─ js/
